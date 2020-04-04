@@ -1,0 +1,37 @@
+dist: trusty
+
+language: node_js
+
+node_js:
+  - 10
+
+addons:
+  apt:
+    packages:
+      - docker-ce
+
+services:
+  - docker
+  - mongodb
+
+env:
+  - NODE_ENV=ci
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install redis-server
+  - sudo service redis-server start
+
+  # Ensure these folders exists for launcher to work with
+  - mkdir ./server/temp
+  - mkdir ./server/temp/code
+  - mkdir ./server/temp/log
+
+  - docker build ./server --no-cache -t launchv0.1
+
+  - npm install --prefix server
+  - npm install --prefix client
+
+cache:
+  directories:
+    - "node_modules"
