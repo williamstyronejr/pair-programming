@@ -1,0 +1,29 @@
+.challenge {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.challenge-header {
+  width: 100%;
+  text-align: center;
+}
+
+.header__title {
+}
+
+.header__prompt {
+}
+
+.challenge-editor {
+  flex: 1 0 auto;
+}
+
+.challenge-options {
+  width: 100%;
+}
+
+@media only screen and (min-width: 600px) {
+}

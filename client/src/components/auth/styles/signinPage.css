@@ -1,0 +1,37 @@
+.signin-form {
+  display: block;
+  width: 80%;
+  margin: 1.3em auto 0 auto;
+  padding: 1.3em 0 1.3em 0;
+  text-align: center;
+  background-color: #262729;
+}
+
+.signin-form__fieldset {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.signin-form__field {
+  margin: 0 0 1.1em 0;
+}
+
+.signin-form__field input {
+  width: 90%;
+  height: 50px;
+  border: none;
+  border-radius: 4px;
+  padding: 0 0 0 1.1em;
+  background-color: #222325;
+  color: white;
+}
+
+.signin-form__field input:hover,
+.signin-form__field input:focus {
+  background-color: #131414;
+}
+
+.signin-form__field span {
+  color: white;
+}

@@ -1,0 +1,23 @@
+.challenge-list {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.challenge-list__item {
+}
+
+.challenge-list__title {
+  margin: 0;
+}
+
+.challenge-list__divider {
+}
+
+@media only screen and (min-width: 600px) {
+  .challenge-list {
+    flex: 1 0 auto;
+    width: auto;
+  }
+}
