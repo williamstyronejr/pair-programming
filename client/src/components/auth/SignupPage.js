@@ -33,7 +33,7 @@ const SignupPage = (props) => {
         }
       })
       .catch((err) => {
-        if (err.response.body) return setError(err.response.body);
+        if (err && err.response.body) return setError(err.response.body);
         setError(true);
       });
   }
@@ -41,25 +41,24 @@ const SignupPage = (props) => {
   return (
     <main className="page-main">
       <section className="signup">
-        <header className="signup__header">
-          <h4 className="signup__heading">signup</h4>
-        </header>
-
         <div className="signup__form">
-          {error && (
-            <div className="signup__error">
-              <p className="signup__warning">Invalid username or password</p>
-            </div>
-          )}
+          <header className="signup__header">
+            <h4 className="signup__heading">Create your account</h4>
+          </header>
 
           <div className="signup__field">
             <label className="signup__label" htmlFor="user">
-              Email
+              <span className="signup__title">Email</span>
+
+              {error && error.email && (
+                <span className="signup__fielderror">{error.email}</span>
+              )}
               <input
                 className="signup__input"
                 type="text"
                 data-cy="email"
                 name="email"
+                placeholder="Email"
                 value={email}
                 onChange={(evt) => setEmail(evt.target.value)}
               />
@@ -68,12 +67,17 @@ const SignupPage = (props) => {
 
           <div className="signup__field">
             <label className="signup__label" htmlFor="user">
-              Username
+              <span className="signup__title">Username</span>
+
+              {error && error.username && (
+                <span className="signup__fielderror">{error.username}</span>
+              )}
               <input
                 className="signup__input"
                 type="text"
                 data-cy="user"
                 name="user"
+                placeholder="Username"
                 value={user}
                 onChange={(evt) => setUser(evt.target.value)}
               />
@@ -81,13 +85,18 @@ const SignupPage = (props) => {
           </div>
 
           <div className="signup__field">
-            <label className="signup__label" htmlFor="user">
-              Password
+            <label className="signup__label" htmlFor="password">
+              <span className="signup__title">Password</span>
+
+              {error && error.password && (
+                <span className="signup__fielderror">{error.password}</span>
+              )}
               <input
                 className="signup__input"
                 type="password"
                 data-cy="password"
                 name="password"
+                placeholder="Password"
                 value={password}
                 onChange={(evt) => setPassword(evt.target.value)}
               />
@@ -95,13 +104,17 @@ const SignupPage = (props) => {
           </div>
 
           <div className="signup__field">
-            <label className="signup__label" htmlFor="user">
-              Password
+            <label className="signup__label" htmlFor="confirm">
+              <span className="signup__title">Confirm</span>
+              {error && error.confirm && (
+                <span className="signup__fielderror">{error.confirm}</span>
+              )}
               <input
                 className="signup__input"
                 type="password"
                 data-cy="confirm"
                 name="confirm"
+                placeholder="Confirm Password"
                 value={confirm}
                 onChange={(evt) => setConfirm(evt.target.value)}
               />
@@ -114,7 +127,7 @@ const SignupPage = (props) => {
             disabled={status === 'sending'}
             onClick={registerUser}
           >
-            signup
+            Sign Up
           </button>
         </div>
       </section>

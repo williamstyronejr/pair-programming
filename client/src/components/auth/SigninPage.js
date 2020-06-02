@@ -35,11 +35,11 @@ const SigninPage = (props) => {
   return (
     <main className="page-main">
       <section className="signin">
-        <header className="signin__header">
-          <h4 className="signin__heading">Signin</h4>
-        </header>
-
         <div className="signin__form">
+          <header className="signin__header">
+            <h4 className="signin__heading">Sign in to your account</h4>
+          </header>
+
           {error && (
             <div className="signin__error">
               <p className="signin__warning">Invalid username or password</p>
@@ -54,6 +54,7 @@ const SigninPage = (props) => {
                 type="text"
                 data-cy="user"
                 name="user"
+                placeholder="Username"
                 value={username}
                 onChange={(evt) => setUser(evt.target.value)}
               />
@@ -68,6 +69,7 @@ const SigninPage = (props) => {
                 type="password"
                 data-cy="password"
                 name="password"
+                placeholder="Password"
                 value={password}
                 onChange={(evt) => setPassword(evt.target.value)}
               />
