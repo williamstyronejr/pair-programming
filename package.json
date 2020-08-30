@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/williamstyronejr/pair-programming#readme",
   "devDependencies": {
-    "concurrently": "^5.2.0"
+    "concurrently": "^5.3.0"
   }
 }
