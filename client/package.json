@@ -4,18 +4,18 @@
   "private": true,
   "proxy": "http://localhost:5000",
   "dependencies": {
-    "axios": "^0.19.2",
-    "codemirror": "^5.54.0",
+    "axios": "^0.20.0",
+    "codemirror": "^5.57.0",
     "normalize.css": "^8.0.1",
     "react": "^16.13.1",
-    "react-codemirror2": "^7.2.0",
+    "react-codemirror2": "^7.2.1",
     "react-dom": "^16.13.1",
     "react-infinite-scroller": "^1.2.4",
-    "react-redux": "^7.2.0",
+    "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.1",
+    "react-scripts": "^3.4.3",
     "redux": "^4.0.5",
-    "redux-form": "^8.3.5",
+    "redux-form": "^8.3.6",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "socket.io-client": "^2.3.0"
@@ -34,12 +34,12 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "cypress": "^4.7.0",
-    "eslint-config-airbnb": "^18.1.0",
+    "cypress": "^5.0.0",
+    "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.20.0",
-    "prettier": "^2.0.5"
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.6",
+    "prettier": "^2.1.1"
   }
 }
