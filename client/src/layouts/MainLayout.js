@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 class MainLayout extends React.Component {
@@ -16,6 +16,13 @@ class MainLayout extends React.Component {
       <div className="container">
         <Header />
         {this.props.children}
+        <footer className="footer">
+          <div>
+            <Link to="/roadmap" className="footer__link">
+              Roadmap
+            </Link>
+          </div>
+        </footer>
       </div>
     );
   }
