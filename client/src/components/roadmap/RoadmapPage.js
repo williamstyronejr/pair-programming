@@ -9,12 +9,39 @@ const RoadmapPage = () => (
       </header>
 
       <div className="roadmap__content">
-        <ul className="roadmap__list">
-          <li className="roadmap__item roadmap__item--divider">
-            <h4 className="roadmap__title">Languages</h4>
-          </li>
-          <li className="roadmap__item">Javascript</li>
-        </ul>
+        <div className="roadmap__group">
+          <h4 className="roadmap__title">General</h4>
+
+          <ul className="roadmap__list">
+            <li className="roadmap__item">
+              <div className="roadmap__checkbox" />
+              <span className="roadmap__task">Darkmode</span>
+            </li>
+            <li className="roadmap__item">
+              <div className="roadmap__checkbox" />
+              <span className="roadmap__task">Profile</span>
+            </li>
+          </ul>
+        </div>
+
+        <div className="roadmap__group">
+          <h4 className="roadmap__title">Languages</h4>
+
+          <ul className="roadmap__list">
+            <li className="roadmap__item">
+              <div className="roadmap__checkbox roadmap__checkbox--active" />
+              <span className="roadmap__task">Javascript</span>
+            </li>
+            <li className="roadmap__item">
+              <div className="roadmap__checkbox" />
+              <span className="roadmap__task">C++</span>
+            </li>
+            <li className="roadmap__item">
+              <div className="roadmap__checkbox" />
+              <span className="roadmap__task">Python</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
   </main>
