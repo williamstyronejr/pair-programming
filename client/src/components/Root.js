@@ -15,6 +15,7 @@ import InvitePage from './challenge/InvitePage';
 import RecoveryPage from './auth/RecoveryPage';
 import NotFoundPage from './NotFoundPage';
 import GithubRegisterPage from './auth/GithubRegisterPage';
+import RoadmapPage from './roadmap/RoadmapPage';
 
 const appRoutes = [
   {
@@ -57,6 +58,10 @@ const landingRoutes = [
   {
     path: '/account/register',
     component: GithubRegisterPage,
+  },
+  {
+    path: '/roadmap',
+    component: RoadmapPage,
   },
 ];
 
