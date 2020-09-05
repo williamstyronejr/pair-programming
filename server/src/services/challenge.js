@@ -2,13 +2,19 @@ const Challenge = require('../models/challenge');
 
 /**
  * Creates and return a challenge.
- * @param {string} title The title of the challenge
- * @param {string} prompt The prompt, or description, of the challenge
- * @param {string} solution The solution to test against.
+ * @param {String} title The title of the challenge
+ * @param {String} prompt The prompt, or description, of the challenge
+ * @param {String} solution The solution to test against.
+ * @param {String} tags Tags separated by commas, will be set to lower case
  * @return {Promise<object>} A promise to resolve with a challenge object.
  */
-exports.createChallenge = (title, prompt, solution) => {
-  return Challenge({ title, prompt, solution }).save();
+exports.createChallenge = (title, prompt, solution, tags) => {
+  return Challenge({
+    title,
+    prompt,
+    solution,
+    tags: tags.toLowerCase(),
+  }).save();
 };
 
 /**
