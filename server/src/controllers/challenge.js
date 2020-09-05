@@ -30,9 +30,9 @@ function createInviteKey(rId) {
  * @param {function} next Express next function to be called
  */
 exports.createChallenge = (req, res, next) => {
-  const { title, prompt, solution } = req.body;
+  const { title, prompt, solution, tags } = req.body;
 
-  createChallenge(title, prompt, solution)
+  createChallenge(title, prompt, solution, tags)
     .then((challenge) => {
       res.json({ challenge });
     })
