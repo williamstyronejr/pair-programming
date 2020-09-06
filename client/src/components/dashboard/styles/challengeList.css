@@ -1,0 +1,48 @@
+.challenge-list {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.challenge-list__item {
+  margin: 10px 15px;
+  padding: 10px;
+  background-color: grey;
+  box-shadow: 0 4px 6px -1px black;
+}
+
+.challenge-list__title {
+  margin: 0;
+}
+
+.challenge-list__tags {
+  display: flex;
+  flex-flow: row wrap;
+  list-style: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.challenge-list__tag {
+  background-color: grey;
+  color: white;
+  margin: 5px 10px 0 0;
+  padding: 7px;
+  border-radius: 5px;
+}
+
+.challenge-list__options {
+  width: 100%;
+}
+
+.challenge-list__link {
+}
+
+@media only screen and (min-width: 600px) {
+  .challenge-list {
+    flex: 1 0 auto;
+    width: auto;
+  }
+}

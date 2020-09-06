@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
-import LoadingComponent from '../shared/loading';
-import '../../styles/challenge_list.css';
+import { ajaxRequest } from '../../utils/utils';
+import LoadingComponent from '../shared/Loading';
+import './styles/challengeList.css';
 
 class ChallengeList extends Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class ChallengeList extends Component {
       loadingList: false,
       listError: null,
       creatingRoom: false,
-      roomError: null
+      roomError: null,
     };
   }
 
@@ -36,9 +36,8 @@ class ChallengeList extends Component {
 
     this.setState({ loadingList: true });
 
-    axios
-      .get(`/challenge/list?page=${page}`)
-      .then(res => {
+    ajaxRequest(`/challenge/list?page=${page}`, 'GET')
+      .then((res) => {
         // If list is empty, set end of list to be true
         if (res.data.length === 0) {
           return this.setState({ endOfList: true, loadingList: false });
@@ -47,26 +46,26 @@ class ChallengeList extends Component {
         this.setState({
           page: this.state.page + 1,
           challenges: [...this.state.challenges, ...res.data],
-          loadingList: false
+          loadingList: false,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({ listError: true, loadingList: false });
       });
   }
 
   createPrivateRoom(cId) {
     this.setState({ creatingRoom: true });
-    axios
-      .post(`/challenge/${cId}/create`)
-      .then(res => {
+
+    ajaxRequest(`/challenge/${cId}/create`, 'POST')
+      .then((res) => {
         if (!res.data.room) {
           return this.setState({ roomError: true });
         }
         // Redirect user to room page
         this.props.history.push(`/c/${cId}/r/${res.data.room}`);
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({ roomError: true, creatingRoom: false });
       });
   }
@@ -80,30 +79,36 @@ class ChallengeList extends Component {
     }
 
     const listItems = challenges.map((challenge, index) => (
-      <React.Fragment>
-        <li className="challenge-list__item" key={`challenge-${index}`}>
+      <>
+        <li className="challenge-list__item" key={`challenge-${challenge._id}`}>
           <div className="challenge-list__details">
             <h3 className="challenge-list__title">{challenge.title}</h3>
-            <p className="challenge-list__prompt">{challenge.prompt}</p>
+            <ul className="challenge-list__tags">
+              {challenge.tags.split(',').map((tag) => (
+                <li className="challenge-list__tag">{tag.trim()}</li>
+              ))}
+            </ul>
           </div>
 
           <div className="challenge-list__options">
-            <Link to={`/c/${challenge._id}`}>Join</Link>
+            <Link className="challenge-list__link" to={`/c/${challenge._id}`}>
+              Pair Up
+            </Link>
+
             <button
               type="button"
+              className="challenge-list__link"
               onClick={() => this.createPrivateRoom(challenge._id)}
             >
-              private
+              Solo
             </button>
           </div>
         </li>
-
-        <hr className="challenge-list__divider" />
-      </React.Fragment>
+      </>
     ));
 
     return (
-      <section className="flex-wrapper">
+      <section className="challenge-list">
         <ul className="challenge-list">
           <InfiniteScroll
             pageStart={0}
