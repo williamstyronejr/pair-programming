@@ -46,7 +46,7 @@ router.get('/user/data', auth.requireAuth, userController.getCurrentUserData);
 
 // Routes for updating/reseting user data
 router.post(
-  '/user/settings/update',
+  '/settings/account',
   profileUpload,
   validationController.validateSettingsUpdate,
   auth.requireAuth,
@@ -54,7 +54,7 @@ router.post(
 );
 
 router.post(
-  '/user/password/update',
+  '/settings/password',
   jsonParser,
   validationController.validatePasswordUpdate,
   auth.requireAuth,
