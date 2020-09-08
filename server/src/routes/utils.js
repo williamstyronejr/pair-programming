@@ -14,8 +14,6 @@ function createFileName(req, file, cb) {
     const ext = mime.getExtension(file.mimetype);
     if (err) return cb(null, `${file.filename + Date.now()}.${ext}`);
 
-    // Check extension type
-
     return cb(null, `${raw.toString('hex') + Date.now()}.${ext}`);
   });
 }
@@ -34,7 +32,7 @@ function imageFilter(req, file, cb) {
   if (ext !== 'png' && ext !== 'jpg' && ext !== 'jpeg') {
     const err = new Error();
     err.status = 400;
-    err.msg = { profile: 'Image provided is not acceptable format.' };
+    err.msg = { profileImage: 'Image provided is not acceptable format.' };
     return cb(err);
   }
 
@@ -43,10 +41,10 @@ function imageFilter(req, file, cb) {
 
 const pictureStorage = multer.diskStorage({
   destination: path.join(__dirname, '../public/images/'),
-  filename: createFileName
+  filename: createFileName,
 });
 
 module.exports.profileUpload = multer({
   storage: pictureStorage,
-  fileFilter: imageFilter
-}).single('profile');
+  fileFilter: imageFilter,
+}).single('profileImage');
