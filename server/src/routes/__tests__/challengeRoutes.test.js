@@ -47,10 +47,10 @@ function createUserRoute(username, email, password, status = 200) {
  * @param {number} status Expected status code from response.
  * @return {Promise<object>} A promise to resolve with a challenge object.
  */
-function createChallengeRoute(title, prompt, solution, status = 200) {
+function createChallengeRoute(title, prompt, solution, tags, status = 200) {
   return request(app)
     .post('/challenge/create')
-    .send({ title, prompt, solution })
+    .send({ title, prompt, solution, tags })
     .set('Accept', 'application/json')
     .expect(status)
     .then((res) => res.body.challenge);
@@ -90,13 +90,15 @@ describe('/POST create challenge', () => {
   const title = 'title';
   const solution = 'solution';
   const prompt = 'prompt';
+  const tags = 'greedy,functions';
 
   test('Successful creates challenge response with challenge object', async () => {
-    const challenge = await createChallengeRoute(title, prompt, solution);
+    const challenge = await createChallengeRoute(title, prompt, solution, tags);
     expect(challenge).toBeDefined();
     expect(challenge.title).toBe(title);
     expect(challenge.prompt).toBe(prompt);
     expect(challenge.solution).toBe(solution);
+    expect(challenge.tags).toBe(tags);
   });
 });
 
