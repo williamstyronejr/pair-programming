@@ -38,8 +38,8 @@ const userEmailValidation = [
     .withMessage('Please only use letters (a-z), numbers, and underscores(_).')
     .isLength({ min: 4, max: 16 })
     .withMessage('Username must be between 4 and 16 characters.')
-    .custom(value =>
-      User.findOne({ username: value }).then(user => {
+    .custom((value) =>
+      User.findOne({ username: value }).then((user) => {
         if (user) throw new Error('Username is already taken.');
       })
     ),
@@ -48,11 +48,11 @@ const userEmailValidation = [
     .isEmail()
     .withMessage('Invalid email')
     .normalizeEmail()
-    .custom(value =>
-      User.findOne({ email: value }).then(user => {
+    .custom((value) =>
+      User.findOne({ email: value }).then((user) => {
         if (user) throw new Error('Email is already in use');
       })
-    )
+    ),
 ];
 
 exports.validateInputs = [...userEmailValidation, checkValdation];
@@ -69,8 +69,8 @@ exports.validateSignup = [
     .withMessage('Please only use letters (a-z), numbers, and underscores(_).')
     .isLength({ min: 4, max: 16 })
     .withMessage('Username must be between 4 and 16 characters.')
-    .custom(value =>
-      User.findOne({ username: value }).then(user => {
+    .custom((value) =>
+      User.findOne({ username: value }).then((user) => {
         if (user) throw new Error('Username is already taken.');
       })
     ),
@@ -85,12 +85,12 @@ exports.validateSignup = [
     .isEmail()
     .withMessage('Invalid email')
     .normalizeEmail()
-    .custom(value =>
-      User.findOne({ email: value }).then(user => {
+    .custom((value) =>
+      User.findOne({ email: value }).then((user) => {
         if (user) throw new Error('Email is already in use');
       })
     ),
-  checkValdation
+  checkValdation,
 ];
 
 /**
@@ -111,8 +111,8 @@ exports.validateSettingsUpdate = [
     .withMessage('Please only use letters (a-z), numbers, and underscores(_).')
     .isLength({ min: 4, max: 16 })
     .withMessage('Username must be between 4 and 16 characters.')
-    .custom(value =>
-      User.findOne({ username: value }).then(user => {
+    .custom((value) =>
+      User.findOne({ username: value }).then((user) => {
         if (user) throw new Error('Username is already taken.');
       })
     ),
@@ -121,17 +121,12 @@ exports.validateSettingsUpdate = [
     .isEmail()
     .withMessage('Invalid email.')
     .normalizeEmail()
-    .custom(value =>
-      User.findOne({ email: value }).then(user => {
+    .custom((value) =>
+      User.findOne({ email: value }).then((user) => {
         if (user) throw new Error('Email is already in use');
       })
     ),
-  body('newPassword', 'Invalid password')
-    .optional()
-    // .withMessage('Must provide password to update.')
-    .isLength({ min: 4, max: 36 })
-    .withMessage('Invalid password'),
-  checkValdation
+  checkValdation,
 ];
 
 /**
@@ -153,7 +148,7 @@ exports.validatePasswordUpdate = [
     .withMessage('Must confirm new password.')
     .custom((value, { req }) => value === req.body.newPassword)
     .withMessage('Password does not match.'),
-  checkValdation
+  checkValdation,
 ];
 
 exports.validatePasswordReset = [
@@ -167,5 +162,5 @@ exports.validatePasswordReset = [
     .withMessage('Must confirm new password.')
     .custom((value, { req }) => value === req.body.password)
     .withMessage('Passwords do no match.'),
-  checkValdation
+  checkValdation,
 ];
