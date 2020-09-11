@@ -49,32 +49,23 @@ exports.getUserData = (req, res, next) => {
 
 /**
  * Route handler for updating the current user's settings. Settings include
- *  username and email.
+ *  username, email, and profile image.
  * @param {object} req Express request object
  * @param {object} res Express response object
  * @param {function} next Express next function to be called
  */
 exports.updateUserData = (req, res, next) => {
   const { username, email, password } = req.body;
+  const { file } = req;
 
   let params = {};
 
   if (username) params = { ...params, username };
   if (email) params = { ...params, email };
-
-  if (req.file) {
-    params = {
-      ...params,
-      profileImage: req.file.filename,
-    };
-  }
+  if (file) params = { ...params, profileImage: file.filename };
 
   // Update user's settings
-  const proms = [updateUser(req.user._id, params)];
-
-  if (password) proms.push(updateUserPassword(req.user._id, password));
-
-  Promise.all(proms)
+  updateUser(req.user._id, params)
     .then((results) => {
       res.json({ success: true });
     })
@@ -96,14 +87,21 @@ exports.updateUserPassword = async (req, res, next) => {
   try {
     const valid = await req.user.comparePassword(password);
 
-    if (!valid) return res.json({ password: 'Incorrect password.' });
+    if (!valid) {
+      const error = new Error(
+        'Incorrect current password when updating password.'
+      );
+      error.msg = { password: 'Incorrect password' };
+      error.status = 400;
+      throw error;
+    }
 
     await updateUserPassword(req.user._id, newPassword);
+
+    res.json({ success: true });
   } catch (err) {
     return next(err);
   }
-
-  return res.json({ success: true });
 };
 
 /**
