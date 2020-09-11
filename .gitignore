@@ -84,8 +84,8 @@ setUpTests.js
 .env.test.local
 .env.production.local
 
-# Public folder for testing
-server/public/
+# Public folder
+server/src/public/images
 !client/public
 
 # Temp files
