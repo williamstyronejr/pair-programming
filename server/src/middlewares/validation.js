@@ -143,7 +143,7 @@ exports.validatePasswordUpdate = [
     .withMessage('Must provide new password.')
     .isLength({ min: 4, max: 36 })
     .withMessage('Invalid password.'),
-  body('newPasswordC')
+  body('confirmPassword')
     .exists()
     .withMessage('Must confirm new password.')
     .custom((value, { req }) => value === req.body.newPassword)
