@@ -72,10 +72,11 @@ function emailRecoveryRoute(field, status = 200) {
     .expect(status);
 }
 
-describe('GET/ input validator', () => {
+describe('/POST /inputvalidator', () => {
+  const createRoute = () => '/inputvalidator';
   test('Empty data response with no errors', async () => {
     await request(app)
-      .post('/inputvalidator')
+      .post(createRoute())
       .send({})
       .set('Accept', 'application/json')
       .expect(200)
@@ -87,7 +88,7 @@ describe('GET/ input validator', () => {
   test('Invalid username responses with error', async () => {
     const username = '';
     await request(app)
-      .post('/inputvalidator')
+      .post(createRoute())
       .send({ username })
       .expect(400)
       .catch((err) => {
@@ -99,7 +100,7 @@ describe('GET/ input validator', () => {
   test('Invalid email responses with error', async () => {
     const email = '';
     await request(app)
-      .post('/inputvalidator')
+      .post(createRoute())
       .send({ email })
       .expect(400)
       .catch((err) => {
@@ -109,14 +110,15 @@ describe('GET/ input validator', () => {
   });
 });
 
-describe('/POST user signup', () => {
+describe('/POST /signup', () => {
+  const createRoute = () => '/signup';
   const username = createRandomString(8);
   const email = createRandomString(8, '@email.com');
   const password = 'pass';
 
   test('Successfully signup sets JWT in cookie', async () => {
     await request(app)
-      .post('/signup')
+      .post(createRoute())
       .send({ username, email, password })
       .expect(200)
       .then((res) => {
@@ -128,7 +130,7 @@ describe('/POST user signup', () => {
   test('Signup with a used username throws 400', async () => {
     // Requires a users to be created in previous test
     await request(app)
-      .post('/signup')
+      .post(createRoute())
       .send({ username, email: `e${email}`, password })
       .set('Accept', 'application/json')
       .expect(400)
@@ -142,7 +144,7 @@ describe('/POST user signup', () => {
   test('Signup with a used email throws 400', async () => {
     // Requires a users to be created in previous test
     await request(app)
-      .post('/signup')
+      .post(createRoute())
       .send({ username: `u${username}`, email, password })
       .set('Accept', 'application/json')
       .expect(400)
@@ -159,7 +161,7 @@ describe('/POST user signup', () => {
     const invalidPassword = '';
 
     await request(app)
-      .post('/signup')
+      .post(createRoute())
       .send({
         username: invalidUsername,
         email: invalidEmail,
@@ -176,7 +178,7 @@ describe('/POST user signup', () => {
   });
 });
 
-describe('/POST user signin', () => {
+describe('/POST /signin', () => {
   const username = createRandomString(8);
   const email = createRandomString(8, '@email.com');
   const password = 'pass';
@@ -207,7 +209,8 @@ describe('/POST user signin', () => {
   }, 10000);
 });
 
-describe('/GET user profile', () => {
+describe('/GET /user/:username/data', () => {
+  const createRoute = (username) => `/user/${username}/data`;
   const username = createRandomString(8);
   const email = createRandomString(8, '@email.com');
   const password = 'pass';
@@ -219,7 +222,7 @@ describe('/GET user profile', () => {
 
   test('User not found response with 200 error message', async () => {
     await request(app)
-      .get(`/user/${username}1/data`)
+      .get(createRoute(`${username}1`))
       .set('Accept', 'application/json')
       .expect(200)
       .then((res) => {
@@ -229,7 +232,7 @@ describe('/GET user profile', () => {
 
   test('User found responses with user data', async () => {
     await request(app)
-      .get(`/user/${username}/data`)
+      .get(createRoute(username))
       .set('Accept', 'application/json')
       .expect(200)
       .then((res) => {
@@ -242,6 +245,7 @@ describe('/GET user profile', () => {
 });
 
 describe('/POST /account/recovery/password', () => {
+  const createRoute = () => '/account/recovery/password';
   const username = createRandomString(8);
   const email = createRandomString(8, '@email.com');
   const password = 'pass';
@@ -252,7 +256,7 @@ describe('/POST /account/recovery/password', () => {
 
   test('Non-existing username responses with success message', async () => {
     await request(app)
-      .post('/account/recovery/password')
+      .post(createRoute())
       .send({ field: `${username}1` })
       .set('Accept', 'application/json')
       .expect(200)
@@ -263,7 +267,7 @@ describe('/POST /account/recovery/password', () => {
 
   test('Non-existing email responses with success message', async () => {
     await request(app)
-      .post('/account/recovery/password')
+      .post(createRoute())
       .send({ field: `e${email}` })
       .set('Accept', 'application/json')
       .expect(200)
@@ -274,7 +278,7 @@ describe('/POST /account/recovery/password', () => {
 
   test('Username should response with success and call to emailer', async () => {
     await request(app)
-      .post('/account/recovery/password')
+      .post(createRoute())
       .send({ field: username })
       .set('Accept', 'application/json')
       .expect(200)
@@ -286,7 +290,7 @@ describe('/POST /account/recovery/password', () => {
 
   test('Email should response with success and call to emailer', async () => {
     await request(app)
-      .post('/account/recovery/password')
+      .post(createRoute())
       .send({ field: email })
       .set('Accept', 'application/json')
       .expect(200)
@@ -297,8 +301,8 @@ describe('/POST /account/recovery/password', () => {
   });
 });
 
-describe('/POST updating user password', () => {
-  const route = '/user/password/update';
+describe('/POST /settings/password', () => {
+  const createRoute = () => '/settings/password';
   const username = createRandomString(8);
   const email = createRandomString(8, '@email.com');
   const password = 'pass';
@@ -311,48 +315,41 @@ describe('/POST updating user password', () => {
     });
   }, 20000);
 
-  function updatePasswordRoute(
-    pass,
-    newPass,
-    newPassC,
-    status = 200,
-    cookie = userCookie
-  ) {
-    return request(app)
-      .post(route)
-      .set('Cookie', cookie)
-      .send({ password: pass, newPassword: newPass, newPasswordC: newPassC })
-      .expect(status);
-  }
-
   test('Using incorrect current response with 400', async () => {
-    await updatePasswordRoute(
-      `${password}c`,
-      newPassword,
-      newPassword,
-      200
-    ).then((res) => {
-      expect(res.body.password).toBeDefined();
-    });
+    await request(app)
+      .post(createRoute())
+      .set('Cookie', userCookie)
+      .send({
+        password: `${password}c`,
+        newPassword,
+        confirmPassword: newPassword,
+      })
+      .expect(400)
+      .catch((err) => {
+        expect(err.response.body.errors.password).toBeDefined();
+      });
   }, 10000);
 
   test('Using incorrect confirm password responses with 400', async () => {
-    await updatePasswordRoute(
-      password,
-      newPassword,
-      `${newPassword}c`,
-      400
-    ).catch((err) => {
-      expect(err.body.errors.newPasswordC).toBeDefined();
-    });
+    await request(app)
+      .post(createRoute())
+      .set('Cookie', userCookie)
+      .send({ password, newPassword, confirmPassword: `${newPassword}c` })
+      .expect(400)
+      .catch((err) => {
+        expect(err.response.body.errors.newPasswordC).toBeDefined();
+      });
   }, 10000);
 
-  test('Sucessful responses updates ', async () => {
-    await updatePasswordRoute(password, newPassword, newPassword, 200).then(
-      (res) => {
+  test('Sucessful updates response with success and can signin with new password ', async () => {
+    await request(app)
+      .post(createRoute())
+      .set('Cookie', userCookie)
+      .send({ password, newPassword, confirmPassword: newPassword })
+      .expect(200)
+      .then((res) => {
         expect(res.body.success).toBeDefined();
-      }
-    );
+      });
 
     // Can login with new password
     await signinRoute(username, newPassword, 200).then((res) => {
@@ -361,7 +358,8 @@ describe('/POST updating user password', () => {
   }, 20000);
 });
 
-describe('/GET current user data', () => {
+describe('/GET /user/data', () => {
+  const createRoute = () => '/user/data';
   const username = createRandomString(8);
   const email = createRandomString(8, '@email.com');
   const password = 'pass';
@@ -375,33 +373,27 @@ describe('/GET current user data', () => {
     });
   }, 20000);
 
-  /**
-   * Creates and returns a request for getting current user data.
-   * @param {number} status Status code to expect from request
-   * @param {string} cookie Cookie to use for authroization
-   * @return {Promise<Object>} A promise to resolve with a response object.
-   */
-  function userDataRoute(status = 200, cookie = userCookie) {
-    return request(app).get('/user/data').set('Cookie', cookie).expect(status);
-  }
-
   test('Invalid cookie will response with 401 error', async () => {
-    await userDataRoute(401, 'token=2');
+    await request(app).get(createRoute()).set('Cookie', 'token=2').expect(401);
   });
 
   test('Valid token will response with user data', async () => {
-    await userDataRoute(200, userCookie).then((res) => {
-      expect(res.body.username).toBeDefined();
-    });
+    await request(app)
+      .get(createRoute())
+      .set('Cookie', userCookie)
+      .expect(200)
+      .then((res) => {
+        expect(res.body.username).toBeDefined();
+      });
   });
 });
 
-describe('/POST reset password', () => {
+describe('/POST /account/reset/password?id&token', () => {
   const username = createRandomString(8);
   const email = createRandomString(8, '@email.com');
   const password = 'pass';
   const newPassword = 'pass1';
-  let resetRoute;
+  let resetRoute; // Route is generated by server
 
   beforeAll(async () => {
     // Create a new user and send a password reset email
@@ -413,56 +405,50 @@ describe('/POST reset password', () => {
     });
   }, 20000);
 
-  /**
-   * Creates and returns a request to reset password.
-   * @param {string} route Route to send request to
-   * @param {string} pass New password to set for user
-   * @param {string} passC Confirm of new password.
-   * @param {number} status Expected status code from response.
-   * @return {Promise<object>} A promise to resolve with a response object.
-   */
-  function resetPasswordRoute(route, pass, passC, status = 200) {
-    return request(app)
-      .post(route)
-      .send({ password: pass, passwordC: passC })
-      .set('Accpet', 'application/json')
-      .expect(status);
-  }
-
   test('Invalid password throws 400 error', async () => {
     const invalidPassword = 'p';
-    resetPasswordRoute(resetRoute, invalidPassword, invalidPassword, 400).catch(
-      (err) => {
+
+    await request(app)
+      .post(resetRoute)
+      .send({ password: invalidPassword, passwordC: invalidPassword })
+      .set('Accpet', 'application/json')
+      .expect(400)
+      .catch((err) => {
         expect(err.body.errors.newPassword).toBeDefined();
-      }
-    );
+      });
   });
 
   test('Incorrect confirm password throw 400 error', async () => {
-    resetPasswordRoute(resetRoute, newPassword, `${newPassword}1`, 400).catch(
-      (err) => {
+    await request(app)
+      .post(resetRoute)
+      .send({ password: newPassword, passwordC: `${newPassword}1` })
+      .set('Accpet', 'application/json')
+      .expect(400)
+      .catch((err) => {
         expect(err.body.errors.newPasswordC).toBeDefined();
-      }
-    );
+      });
   });
 
   test('Using invalid tokens responses with a 400 error', async () => {
-    await resetPasswordRoute(
-      `${resetRoute}1`,
-      newPassword,
-      newPassword,
-      400
-    ).catch((err) => {
-      expect(err).toBeDefined();
-    });
+    await request(app)
+      .post(`${resetRoute}1`)
+      .send({ password: newPassword, passwordC: newPassword })
+      .set('Accpet', 'application/json')
+      .expect(400)
+      .catch((err) => {
+        expect(err).toBeDefined();
+      });
   });
 
   test('Successful password resets responses with 200', async () => {
-    await resetPasswordRoute(resetRoute, newPassword, newPassword).then(
-      (res) => {
+    await request(app)
+      .post(resetRoute)
+      .send({ password: newPassword, passwordC: newPassword })
+      .set('Accpet', 'application/json')
+      .expect(200)
+      .then((res) => {
         expect(res.body.success).toBeTruthy();
-      }
-    );
+      });
 
     // Check if user can sign in with new password
     await signinRoute(username, newPassword).then((res) => {
@@ -471,7 +457,8 @@ describe('/POST reset password', () => {
   }, 20000);
 });
 
-describe('/POST updating user data', () => {
+describe('/POST /settings/account', () => {
+  const createRoute = () => '/settings/account';
   const username = createRandomString(8);
   const email = createRandomString(8, '@email.com');
   const password = 'pass';
@@ -483,50 +470,47 @@ describe('/POST updating user data', () => {
     });
   }, 10000);
 
-  /**
-   * Creates and returns request for updating user data.
-   * @param {string} pass Password of current user
-   * @param {object} params Data to send with request as a JSON.
-   * @param {200} status Expected status code from response.
-   * @return {Promise<object>} A promise to resolve with a response object.
-   */
-  function updateUserRoute(params = {}, status = 200, cookie = userCookie) {
-    return request(app)
-      .post('/user/settings/update')
-      .set('accept', 'multipart/form-data')
-      .field(params)
-      .set('Cookie', cookie)
-      .expect(status);
-  }
-
   test('Updating with used username throws 400 error', async () => {
-    await updateUserRoute({ username }, 400).catch((err) => {
-      expect(err.response.body.errors.username);
-    });
+    await request(app)
+      .post('/settings/account')
+      .set('accept', 'multipart/form-data')
+      .field({ username })
+      .set('Cookie', userCookie)
+      .expect(400)
+      .catch((err) => {
+        expect(err.response.data.errors.username);
+      });
   }, 10000);
 
   test('Updating with used email throws 400 error', async () => {
-    await updateUserRoute({ email }, 400).catch((err) => {
-      expect(err.body.errors.email);
-    });
+    await request(app)
+      .post('/settings/account')
+      .set('accept', 'multipart/form-data')
+      .field({ email })
+      .set('Cookie', userCookie)
+      .expect(400)
+      .catch((err) => {
+        expect(err.body.errors.email);
+      });
   }, 10000);
 
   test('Updating username response with success', async () => {
     const newUsername = `${username}2`;
-    await updateUserRoute({ username: newUsername }).then((res) => {
-      expect(res.body.success).toBeTruthy();
-    });
+    const newEmail = createRandomString(8, '@email.com');
+
+    await request(app)
+      .post('/settings/account')
+      .set('accept', 'multipart/form-data')
+      .field({ username: newUsername, email: newEmail })
+      .set('Cookie', userCookie)
+      .expect(200)
+      .then((res) => {
+        expect(res.body.success).toBeTruthy();
+      });
 
     // Try logging in with the new username
     await signinRoute(newUsername, password).then((res) => {
       expect(res.body.success).toBeTruthy();
     });
   }, 20000);
-
-  test('Updating email responses with success', async () => {
-    const newEmail = `e${email}`;
-    await updateUserRoute({ email: newEmail }).then((res) => {
-      expect(res.body.success).toBeTruthy();
-    });
-  }, 10000);
 });
