@@ -65,7 +65,7 @@ exports.getChallengeList = (req, res, next) => {
 
   getChallengeList(page * limit, limit)
     .then((list) => {
-      res.json(list);
+      res.json({ challenges: list });
     })
     .catch((err) => {
       next(err);
