@@ -17,19 +17,21 @@ afterAll(async () => {
 });
 
 describe('Creating challenges', () => {
-  test('Successfully create', async () => {
+  test('Successfully creating challenge should response with challenge object', async () => {
     const title = 'title';
     const prompt = 'prompt';
     const solution = 'solution';
+    const tags = 'mklfdsa,mkldfsa';
 
-    const challenge = await createChallenge(title, prompt, solution);
+    const challenge = await createChallenge(title, prompt, solution, tags);
 
     expect(challenge).toBeDefined();
     expect(typeof challenge).toBe('object');
     expect(challenge.title).toBe(title);
     expect(challenge.prompt).toBe(prompt);
     expect(challenge.solution).toBe(solution);
-  }, 10000);
+    expect(challenge.tags).toBe(tags);
+  });
 });
 
 describe('Find challenges', () => {
@@ -40,7 +42,9 @@ describe('Find challenges', () => {
   beforeAll(async () => {
     const proms = []; // List of promises
     for (let i = 1; i <= numToCreate; i++) {
-      proms.push(createChallenge(`title${i}`, `prompt${i}`, `solution${i}`));
+      proms.push(
+        createChallenge(`title${i}`, `prompt${i}`, `solution${i}`, `tags${i}`)
+      );
     }
 
     challenges = await Promise.all(proms);
@@ -54,6 +58,7 @@ describe('Find challenges', () => {
     expect(challenge.title).toBe(challenges[0].title);
     expect(challenge.prompt).toBe(challenges[0].prompt);
     expect(challenge.solution).toBe(challenges[0].solution);
+    expect(challenge.tags).toBe(challenges[0].tags);
   }, 10000);
 
   test('Finding list of challenges', async () => {
@@ -75,9 +80,10 @@ describe('Comparing Solution', () => {
   const title = 'title';
   const prompt = 'prompt';
   const solution = 'test';
+  const tags = 'tag1,tag2';
 
   beforeAll(async () => {
-    challenge = await createChallenge(title, prompt, solution);
+    challenge = await createChallenge(title, prompt, solution, tags);
   }, 10000);
 
   test('Correct solution', async () => {
