@@ -16,11 +16,6 @@ body {
   height: 100%;
 }
 
-.container {
-  width: 100%;
-  min-height: 100%;
-}
-
 .page-main {
   width: 100%;
   height: auto; /* Fallback  */
@@ -30,6 +25,7 @@ body {
 .page-section__center {
   display: flex;
   height: 100%;
+  width: 100%;
   flex-flow: column;
   justify-content: center;
   align-items: center;
@@ -51,16 +47,20 @@ body {
   background: transparent;
   border: none;
   border-radius: 4px;
-  color: white;
+  color: #ffffff;
 }
 
-.btn-submit {
-  background-color: #222325;
-  color: #553d87;
+.btn--submit {
+  background-color: #23b3e4;
 }
 
-.btn-submit:hover {
-  background-color: #131414;
+.btn--submit:hover {
+  cursor: pointer;
+}
+
+.btn--submit:disabled {
+  cursor: default;
+  cursor: not-allowed;
 }
 
 .btn-signout {
