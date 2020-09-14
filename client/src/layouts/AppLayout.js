@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import Header from '../components/AppHeader';
+import Header from './AppHeader';
 import { signoutUser } from '../actions/authentication';
 
 /**
@@ -33,14 +33,14 @@ class AppLayout extends React.Component {
     }
 
     return (
-      <div className="container">
+      <>
         <Header
           signout={this.props.signoutUser}
           username={this.props.user.username}
           profileImage={profileImage}
         />
         {this.props.children}
-      </div>
+      </>
     );
   }
 }

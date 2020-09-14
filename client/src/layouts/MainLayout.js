@@ -13,7 +13,7 @@ class MainLayout extends React.Component {
       return <Redirect to="/dashboard" />;
 
     return (
-      <div className="container">
+      <>
         <Header />
         {this.props.children}
         <footer className="footer">
@@ -23,7 +23,7 @@ class MainLayout extends React.Component {
             </Link>
           </div>
         </footer>
-      </div>
+      </>
     );
   }
 }
