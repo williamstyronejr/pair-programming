@@ -1,7 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { openSocket, closeSocket } from '../../actions/socket';
+import { Timer } from '../shared/Timer';
 import {
   joinQueue,
   leaveQueue,
@@ -75,25 +76,24 @@ class ChallengeQueuePage extends Component {
       );
     } else if (matchFound && !acceptedMatch && !declinedMatch) {
       statusMessage = (
-        <React.Fragment>
+        <>
           <h2>Pair Found</h2>
           <button
             type="button"
             onClick={() => this.props.acceptMatch(this.props.queue.matchId)}
           >
-            Accept
+            Accept Pair
           </button>
           <button type="button" onClick={this.props.declineMatch}>
-            Decline Match
+            Decline Pair
           </button>
-        </React.Fragment>
+        </>
       );
     } else {
       statusMessage = (
-        <Fragment>
-          <h2>Finding Pair</h2>
-          <p className="dot-loader" />
-        </Fragment>
+        <>
+          <h2 className="queue__status">In Queue</h2>
+        </>
       );
     }
 
@@ -101,6 +101,11 @@ class ChallengeQueuePage extends Component {
       <main className="page-main">
         <section className="page-section__center">
           {statusMessage}
+          <Timer
+            isPaused={
+              (matchFound && !acceptedMatch && !declinedMatch) || acceptedMatch
+            }
+          />
           <div>
             <button
               type="button"
@@ -111,7 +116,7 @@ class ChallengeQueuePage extends Component {
                 )
               }
             >
-              leave queue
+              Cancel
             </button>
           </div>
         </section>
