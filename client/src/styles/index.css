@@ -47,10 +47,14 @@ body {
   background: transparent;
   border: none;
   border-radius: 4px;
-  color: #ffffff;
+}
+
+.btn:hover {
+  cursor: pointer;
 }
 
 .btn--submit {
+  color: #ffffff;
   background-color: #23b3e4;
 }
 
