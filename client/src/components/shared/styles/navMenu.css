@@ -1,0 +1,126 @@
+/* Menu Toggle styles */
+.menu-left .nav-toggle,
+.menu-left-active .nav-toggle {
+  left: 10px;
+  top: 10px;
+}
+
+.menu-right .nav-toggle,
+.menu-right-active .nav-toggle {
+  right: 0;
+  top: 0;
+}
+
+.menu-mini .nav-toggle {
+  position: relative;
+}
+
+.nav-toggle {
+  position: absolute;
+  z-index: 3;
+}
+
+.nav-toggle__img {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.nav-toggle__img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* Menu Toggle animations */
+.nav-toggle__bar {
+  display: block;
+  width: 40px;
+  height: 5px;
+  margin: 0 0 5px 0;
+  background-color: black;
+}
+
+.menu-active .nav-toggle-x .nav-toggle__bar {
+}
+
+/* Nav list styles */
+.nav {
+  width: 200px;
+  position: absolute;
+  z-index: 2;
+}
+
+.menu-mini .nav {
+  display: none;
+}
+
+.menu-mini-active .nav {
+  display: block;
+  width: 200px;
+  top: 80px;
+  right: 0px;
+  background-color: #232323;
+}
+
+.menu-left .nav {
+  height: 100%;
+  top: 0;
+  left: -200px;
+  padding: 60px 0 0 0;
+  transition: left 0.5s ease-out;
+  background-color: #232323;
+}
+
+.menu-left-active .nav {
+  height: 100%;
+  top: 0;
+  left: 0;
+  padding: 60px 0 0 0;
+  transition: left 0.5s ease-out;
+  background-color: #232323;
+}
+
+/* Link list styles */
+.nav-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.nav-list li a {
+  text-decoration: none;
+  color: white;
+}
+
+.nav-list li a:hover {
+  color: blue;
+}
+
+@media only screen and (min-width: 600px) {
+  .menu-collapsable .nav {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .menu-collapsable .nav-list li {
+    display: inline-block;
+    padding: 0 1em;
+  }
+
+  .menu-left .nav,
+  .menu-left-active .nav {
+    padding: 0;
+    left: 0;
+    background: transparent;
+    transition: none;
+  }
+
+  .menu-collapsable .nav-toggle {
+    display: none;
+  }
+}
