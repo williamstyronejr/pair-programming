@@ -10,7 +10,7 @@ class MainLayout extends React.Component {
 
   render() {
     if (this.props.user.authenticated && this.props.user.username)
-      return <Redirect to="/dashboard" />;
+      return <Redirect to="/challenges" />;
 
     return (
       <>

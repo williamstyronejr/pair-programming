@@ -12,7 +12,7 @@ const SigninPage = (props) => {
   const [status, setStatus] = useState('');
   const [error, setError] = useState(false);
 
-  if (props.user.authenticated) return <Redirect to="/dashboard" />;
+  if (props.user.authenticated) return <Redirect to="/challenges" />;
 
   function signUserIn() {
     if (status === 'sending') return;

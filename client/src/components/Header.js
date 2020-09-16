@@ -7,7 +7,7 @@ const Header = () => (
   <header className="page-header">
     <NavMenu toggleType="img">
       <Link to="/">Home</Link>
-      <Link to="/dashboard">Dashboard</Link>
+      <Link to="/challenges">Challenges</Link>
     </NavMenu>
   </header>
 );

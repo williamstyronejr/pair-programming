@@ -93,7 +93,7 @@ exports.verifyGitSignin = (req, res, next) => {
 
       // Store token into cookie and redirect user to github verify account
       res.cookie('token', token, {});
-      return res.redirect('/dashboard');
+      return res.redirect('/challenges');
     }
   )(req, res, next);
 };

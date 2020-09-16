@@ -69,7 +69,7 @@ class ChallengeQueuePage extends Component {
     let statusMessage;
 
     if (leaveQueue) {
-      statusMessage = <Redirect to="/dashboard" />;
+      statusMessage = <Redirect to="/challenges" />;
     } else if (roomId) {
       statusMessage = (
         <Redirect to={`/c/${this.props.match.params.cId}/r/${roomId}`} />

@@ -13,7 +13,7 @@ const SignupPage = (props) => {
   const [status, setStatus] = useState('');
   const [error, setError] = useState(false);
 
-  if (props.user.authenticated) return <Redirect to="/dashboard" />;
+  if (props.user.authenticated) return <Redirect to="/challenges" />;
 
   function registerUser() {
     if (status === 'sending') return;

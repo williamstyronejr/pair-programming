@@ -29,7 +29,7 @@ const Challenge = (props) => {
         <div className="">
           <p>
             Challenge Completed!!!
-            <Link to="/dashboard">Click here</Link> to go dashboard.
+            <Link to="/challenges">Click here</Link> to go dashboard.
           </p>
         </div>
       )}

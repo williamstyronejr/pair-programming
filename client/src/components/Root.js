@@ -5,7 +5,7 @@ import AppLayout from '../layouts/AppLayout';
 
 // Pages
 import HomePage from './HomePage';
-import DashboardPage from './dashboard/DashboardPage';
+import ChallengeListPage from './challengeList/ChallengeListPage';
 import SignupPage from './auth/SignupPage';
 import SigninPage from './auth/SigninPage';
 import ChallengeQueuePage from './challenge/ChallengeQueuePage';
@@ -19,8 +19,8 @@ import RoadmapPage from './roadmap/RoadmapPage';
 
 const appRoutes = [
   {
-    path: '/dashboard',
-    component: DashboardPage,
+    path: '/challenges',
+    component: ChallengeListPage,
   },
   {
     path: '/c/:cId',
@@ -32,7 +32,7 @@ const appRoutes = [
     component: ChallengePage,
   },
   {
-    path: '/settings',
+    path: '/settings/:type?',
     component: SettingsPage,
   },
 ];

@@ -7,43 +7,33 @@ import { signoutUser } from '../actions/authentication';
 /**
  *  General app layout, handles redirecting user if not authenticated.
  */
-class AppLayout extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    return (
-      !nextProps.user.authenticated ||
-      this.props.user.profileImage !== nextProps.user.profileImage
-    );
+const AppLayout = (props) => {
+  if (!props.user.authenticated && !props.user.authenticating) {
+    return <Redirect to="/signin" />;
+  } else if (props.user.authenticated && !props.user.username) {
+    return <Redirect to="/account/register" />;
   }
 
-  render() {
-    if (!this.props.user.authenticated && !this.props.user.authenticating) {
-      return <Redirect to="/signin" />;
-    } else if (this.props.user.authenticated && !this.props.user.username) {
-      return <Redirect to="/account/register" />;
-    }
-
-    let profileImage;
-    if (!this.props.user.profileImage) {
-      profileImage = '/img/default.jpg';
-    } else {
-      console.log(this.props.user.profileImage);
-      profileImage = this.props.user.profileImage.includes('https://')
-        ? `${this.props.user.profileImage}`
-        : `/img/${this.props.user.profileImage}`;
-    }
-
-    return (
-      <>
-        <Header
-          signout={this.props.signoutUser}
-          username={this.props.user.username}
-          profileImage={profileImage}
-        />
-        {this.props.children}
-      </>
-    );
+  let profileImage;
+  if (!props.user.profileImage) {
+    profileImage = '/img/default.jpg';
+  } else {
+    profileImage = props.user.profileImage.includes('https://')
+      ? `${props.user.profileImage}`
+      : `/img/${props.user.profileImage}`;
   }
-}
+
+  return (
+    <>
+      <Header
+        signout={props.signoutUser}
+        username={props.user.username}
+        profileImage={profileImage}
+      />
+      {props.children}
+    </>
+  );
+};
 
 const mapStateToProps = (state) => ({
   user: state.user,
