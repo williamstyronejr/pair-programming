@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../styles/nav_menu.css';
+import './styles/navMenu.css';
 
 /**
  * Menu types:
@@ -15,7 +15,7 @@ class NavMenu extends Component {
     this.onKeyDown = this.onKeyDown.bind(this);
 
     this.state = {
-      toggle: false
+      toggle: false,
     };
   }
 
@@ -34,7 +34,7 @@ class NavMenu extends Component {
   }
 
   render() {
-    const list = this.props.children.map(elem => (
+    const list = this.props.children.map((elem) => (
       <li className="nav-list__item">{elem}</li>
     ));
 
