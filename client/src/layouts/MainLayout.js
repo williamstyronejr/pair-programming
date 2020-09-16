@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
-import Header from '../components/Header';
+import Header from './Header';
 
 class MainLayout extends React.Component {
   shouldComponentUpdate(nextProps) {
