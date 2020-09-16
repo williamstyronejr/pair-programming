@@ -5,7 +5,7 @@ import { ajaxRequest } from '../../utils/utils';
 import LoadingComponent from '../shared/Loading';
 import './styles/challengeList.css';
 
-const ChallengeList = (props) => {
+const ChallengeListPage = (props) => {
   const [page, setPage] = useState(0);
   const [endOfList, setEndOfList] = useState(false);
   const [challenges, setChallenge] = useState([]);
@@ -109,44 +109,4 @@ const ChallengeList = (props) => {
   );
 };
 
-// class ChallengeList extends Component {
-//   render() {
-//     const { endOfList, challenges } = this.state;
-
-//     // Displays loading indicator
-//     if (challenges.length === 0) {
-//       return <LoadingComponent error={endOfList} />;
-//     }
-
-//     const listItems = challenges.map((challenge, index) => (
-//       <>
-//         <li className="challenge-list__item" key={`challenge-${challenge._id}`}>
-//           <div className="challenge-list__details">
-//             <h3 className="challenge-list__title">{challenge.title}</h3>
-//             <ul className="challenge-list__tags">
-//               {challenge.tags.split(',').map((tag) => (
-//                 <li className="challenge-list__tag">{tag.trim()}</li>
-//               ))}
-//             </ul>
-//           </div>
-
-//           <div className="challenge-list__options">
-//             <Link className="challenge-list__link" to={`/c/${challenge._id}`}>
-//               Pair Up
-//             </Link>
-
-//             <button
-//               type="button"
-//               className="challenge-list__link"
-//               onClick={() => this.createPrivateRoom(challenge._id)}
-//             >
-//               Solo
-//             </button>
-//           </div>
-//         </li>
-//       </>
-//     ));
-//   }
-// }
-
-export default withRouter(ChallengeList);
+export default withRouter(ChallengeListPage);
