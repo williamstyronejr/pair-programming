@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import NavMenu from './NavMenu';
+import NavMenu from '../components/shared/NavMenu';
 import '../styles/header.css';
 
 const Header = () => (
