@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { createRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { ajaxRequest } from '../../utils/utils';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './styles/settingsPage.css';
 
 const AccountForm = ({ currentUsername, currentEmail, currentImage }) => {
@@ -11,6 +11,8 @@ const AccountForm = ({ currentUsername, currentEmail, currentImage }) => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState({});
   const [notification, setNotification] = useState(null);
+
+  const fileRef = createRef();
 
   const submitForm = (evt) => {
     evt.preventDefault();
@@ -52,11 +54,24 @@ const AccountForm = ({ currentUsername, currentEmail, currentImage }) => {
           <img
             src={currentImage ? `/img/${currentImage}` : ''}
             className="settings__image"
+            tabIndex={0}
+            onClick={() => fileRef.current.click()}
+            onKeyDown={(e) => {
+              const key = e.key || e.keyCode;
+              if (key == 'Enter' || key == 13) fileRef.current.click();
+            }}
           />
+
+          <span className="settings__title settings__title--center">
+            {currentUsername}
+          </span>
+
           <input
             type="file"
-            className="settings__input"
+            className="settings__input settings__input--file"
             name="profileImage"
+            accept="image/jpeg,image/png"
+            ref={fileRef}
             onChange={(evt) => setProfileImage(evt.target.files[0])}
           />
         </label>
@@ -65,10 +80,12 @@ const AccountForm = ({ currentUsername, currentEmail, currentImage }) => {
       <fieldset className="settings__field">
         <label className="settings__label">
           <span className="settings__title">Username</span>
-          <span className="settings__error">{error.username}</span>
+          {error.username ? (
+            <span className="settings__error">{error.username}</span>
+          ) : null}
           <input
             type="text"
-            className="settings__input"
+            className="settings__input settings__input--text"
             name="username"
             value={username}
             placeholder={currentUsername}
@@ -80,10 +97,12 @@ const AccountForm = ({ currentUsername, currentEmail, currentImage }) => {
       <fieldset className="settings__field">
         <label className="settings__label">
           <span className="settings__title">Email</span>
-          <span className="settings__error">{error.email}</span>
+          {error.email ? (
+            <span className="settings__error">{error.email}</span>
+          ) : null}
           <input
             type="text"
-            className="settings__input"
+            className="settings__input settings__input--text"
             name="email"
             value={email}
             placeholder={currentEmail}
@@ -144,10 +163,12 @@ const PasswordForm = () => {
       <fieldset className="settings__field">
         <label className="settings__label">
           <span className="settings__title">Current Password</span>
-          <span className="settings__error">{error.password}</span>
+          {error.password ? (
+            <span className="settings__error">{error.password}</span>
+          ) : null}
           <input
             type="password"
-            className="settings__input"
+            className="settings__input settings__input--text"
             name="password"
             value={currentPassword}
             onChange={(evt) => setCurrent(evt.target.value)}
@@ -158,10 +179,12 @@ const PasswordForm = () => {
       <fieldset className="settings__field">
         <label className="settings__label">
           <span className="settings__title">New Password</span>
-          <span className="settings__error">{error.newPassword}</span>
+          {error.newPassword ? (
+            <span className="settings__error">{error.newPassword}</span>
+          ) : null}
           <input
             type="password"
-            className="settings__input"
+            className="settings__input settings__input--text"
             name="newPassword"
             value={newPassword}
             onChange={(evt) => setNew(evt.target.value)}
@@ -172,10 +195,12 @@ const PasswordForm = () => {
       <fieldset className="settings__field">
         <label className="settings__label">
           <span className="settings__title">Confirm Password</span>
-          <span className="settings__error">{error.confirmPassword}</span>
+          {error.confirmPassword ? (
+            <span className="settings__error">{error.confirmPassword}</span>
+          ) : null}
           <input
             type="password"
-            className="settings__input"
+            className="settings__input settings__input--text"
             name="confirmPassword"
             value={confirmPassword}
             onChange={(evt) => setConfirm(evt.target.value)}
@@ -209,13 +234,17 @@ const SettingsPage = (props) => {
       break;
 
     default:
-      displayedForm = <Redirect to="/settings/account" />;
+      displayedForm = null;
   }
 
   return (
     <main className="page-main">
       <section className="settings">
-        <aside className="settings__links">
+        <aside
+          className={`settings__aside ${
+            !displayedForm ? 'settings__aside--active' : ''
+          }`}
+        >
           <ul className="settings__list">
             <li className="settings__item">
               <Link
