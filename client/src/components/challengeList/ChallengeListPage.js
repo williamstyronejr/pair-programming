@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import { ajaxRequest } from '../../utils/utils';
@@ -47,11 +47,12 @@ const ChallengeListPage = (props) => {
 
     ajaxRequest(`/challenge/${cId}/create`, 'POST')
       .then((res) => {
+        console.log(res.data);
         if (!res.data.room) {
           setRoomError(true);
         }
         // Redirect user to room page
-        this.props.history.push(`/c/${cId}/r/${res.data.room}`);
+        props.history.push(`/c/${cId}/r/${res.data.room}`);
       })
       .catch((err) => {
         setRoomError(true);
@@ -64,11 +65,12 @@ const ChallengeListPage = (props) => {
     return <LoadingComponent error={endOfList} />;
   }
 
-  const listItems = challenges.map((challenge, index) => (
+  const listItems = challenges.map((challenge) => (
     <>
       <li className="challenge-list__item" key={`challenge-${challenge._id}`}>
         <div className="challenge-list__details">
           <h3 className="challenge-list__title">{challenge.title}</h3>
+          <p className="challenge-list__prompt">{challenge.prompt}</p>
           <ul className="challenge-list__tags">
             {challenge.tags.split(',').map((tag) => (
               <li className="challenge-list__tag">{tag.trim()}</li>
@@ -84,7 +86,7 @@ const ChallengeListPage = (props) => {
           <button
             type="button"
             className="challenge-list__link"
-            onClick={() => this.createPrivateRoom(challenge._id)}
+            onClick={() => createPrivateRoom(challenge._id)}
           >
             Solo
           </button>
