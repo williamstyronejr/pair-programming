@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ChatIcon from '../shared/ChatIcon';
-import '../../styles/chat_room.css';
+import './styles/chatRoom.css';
 
 class ChatRoom extends Component {
   onChange = (e) => {
