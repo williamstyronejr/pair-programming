@@ -7,7 +7,7 @@
   display: none;
 }
 
-.settings__aside--active {
+.settings--inactive .settings__aside {
   display: block;
   width: 100%;
   max-width: 600px;
@@ -33,15 +33,21 @@
 }
 
 .settings__link:hover {
+  background-color: #f0f0f0;
 }
 
 .settings__link--active {
   background-color: #d7d7d7;
   border-left: 3px solid #000000;
+  width: 100%;
 }
 
 .settings__content {
   flex: 1 0 auto;
+}
+
+.settings--inactive .settings__content {
+  display: none;
 }
 
 .settings__form {
@@ -72,7 +78,7 @@
   width: 100%;
 }
 
-.settings__lab7el {
+.settings__label {
 }
 
 .settings__image {
@@ -80,10 +86,12 @@
   width: 100px;
   border-radius: 50%;
   margin: 0 auto;
+  background-color: #202020;
 }
 
 .settings__image:hover {
   cursor: pointer;
+  opacity: 0.2;
 }
 
 .settings__title {
@@ -133,7 +141,7 @@
     width: 200px;
   }
 
-  .settings__aside--active {
+  .settings--inactive .settings__aside {
     max-width: 600px;
     margin: 0 auto;
   }

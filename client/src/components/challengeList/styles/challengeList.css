@@ -1,4 +1,5 @@
 .challenge-list {
+  position: relative;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -6,6 +7,8 @@
 }
 
 .challenge-list__item {
+  display: flex;
+  flex-flow: column wrap;
   margin: 10px 15px;
   padding: 10px;
   background-color: grey;
@@ -26,7 +29,7 @@
 }
 
 .challenge-list__tag {
-  background-color: grey;
+  background-color: blue;
   color: white;
   margin: 5px 10px 0 0;
   padding: 7px;
@@ -34,15 +37,32 @@
 }
 
 .challenge-list__options {
+  display: block;
   width: 100%;
 }
 
 .challenge-list__link {
+  color: white;
+  border: none;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.challenge-list__link:hover {
+  cursor: pointer;
 }
 
 @media only screen and (min-width: 600px) {
   .challenge-list {
     flex: 1 0 auto;
     width: auto;
+  }
+
+  .challenge-list__details {
+    width: 80%;
+  }
+
+  .challenge-list__options {
+    width: 20%;
   }
 }
