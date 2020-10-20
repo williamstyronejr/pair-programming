@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import NavMenu from '../components/NavMenu';
+import NavMenu from '../components/shared/NavMenu';
 import './styles/appHeader.css';
 
 const AppHeader = (props) => {
@@ -11,7 +11,7 @@ const AppHeader = (props) => {
     <header className="page-header">
       <NavMenu menuType="left">
         <Link to="/">Home</Link>
-        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/challenges">Challenges</Link>
       </NavMenu>
 
       <div className="header__right">
@@ -21,18 +21,34 @@ const AppHeader = (props) => {
             src={props.profileImage}
             alt="Profile Image"
             onClick={() => setUserMenu(!userMenu)}
+            onKeyDown={(e) => (e.keyCode === 13 ? setUserMenu(!userMenu) : '')}
+            tabIndex={0}
           />
 
           <div
             className={`menu__content ${
               userMenu ? 'menu__content--active' : ''
             }`}
+            onBlur={(e) =>
+              !e.currentTarget.contains(e.relatedTarget)
+                ? setUserMenu(!userMenu)
+                : ''
+            }
           >
             <nav className="menu__nav">
               <ul className="menu__list">
+                <li className="menu__item">
+                  <Link className="menu__link" to="/settings">
+                    Settings
+                  </Link>
+                </li>
                 <hr className="menu__dividor" />
                 <li className="menu__item">
-                  <button className="menu__link" onClick={() => props.signout}>
+                  <button
+                    className="menu__link"
+                    type="button"
+                    onClick={() => props.signout}
+                  >
                     Signout
                   </button>
                 </li>
