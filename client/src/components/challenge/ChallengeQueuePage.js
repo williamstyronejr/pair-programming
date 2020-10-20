@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { openSocket, closeSocket } from '../../actions/socket';
@@ -11,6 +11,7 @@ import {
   clearQueue,
   matchTimeout,
 } from '../../actions/queue';
+import './styles/challengeQueuePage.css';
 
 class ChallengeQueuePage extends Component {
   componentDidMount() {
@@ -90,24 +91,28 @@ class ChallengeQueuePage extends Component {
         </>
       );
     } else {
-      statusMessage = (
-        <>
-          <h2 className="queue__status">In Queue</h2>
-        </>
-      );
+      statusMessage = null;
     }
 
     return (
       <main className="page-main">
-        <section className="page-section__center">
-          {statusMessage}
-          <Timer
-            isPaused={
-              (matchFound && !acceptedMatch && !declinedMatch) || acceptedMatch
-            }
-          />
-          <div>
+        <section className="queue">
+          <div className="queue__notification">{statusMessage}</div>
+
+          <header className="queue__header">
+            <h2 className="queue__heading">In Queue</h2>
+          </header>
+
+          <div className="queue__info">
+            <Timer
+              isPaused={
+                (matchFound && !acceptedMatch && !declinedMatch) ||
+                acceptedMatch
+              }
+            />
+
             <button
+              className="btn btn--cancel"
               type="button"
               onClick={() =>
                 this.props.leaveQueue(
