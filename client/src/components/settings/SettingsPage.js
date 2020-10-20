@@ -1,7 +1,7 @@
-import React, { createRef, useState } from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { ajaxRequest } from '../../utils/utils';
 import { Link } from 'react-router-dom';
+import { ajaxRequest } from '../../utils/utils';
 import './styles/settingsPage.css';
 
 const AccountForm = ({ currentUsername, currentEmail, currentImage }) => {
@@ -239,12 +239,10 @@ const SettingsPage = (props) => {
 
   return (
     <main className="page-main">
-      <section className="settings">
-        <aside
-          className={`settings__aside ${
-            !displayedForm ? 'settings__aside--active' : ''
-          }`}
-        >
+      <section
+        className={`settings ${!displayedForm ? 'settings--inactive' : ''}`}
+      >
+        <aside className="settings__aside">
           <ul className="settings__list">
             <li className="settings__item">
               <Link
