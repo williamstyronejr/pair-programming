@@ -1,0 +1,56 @@
+.challenge {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.challenge__header {
+  width: 100%;
+  text-align: center;
+  flex: 0 1 auto;
+}
+
+.challenge__heading {
+  margin: 0;
+}
+
+.challenge__details {
+}
+
+.challenge__prompt {
+  margin: 0;
+}
+
+.challenge__content {
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1 0 auto;
+}
+
+.challenge__editor {
+  flex: 1 0 auto;
+}
+
+.challenge__options {
+  width: 100%;
+  flex: 0 1 auto;
+}
+
+.challenge__invite {
+  position: relative;
+  width: auto;
+  background-color: white;
+  padding: 2em;
+  border-radius: 3px;
+}
+
+.challenge__invite-link {
+  border: 1px solid black;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 5px;
+}
+
+@media only screen and (min-width: 600px) {
+}

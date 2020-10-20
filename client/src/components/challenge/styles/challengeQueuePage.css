@@ -1,0 +1,32 @@
+.queue {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1em;
+}
+
+.queue__header {
+  width: 100%;
+}
+
+.queue__heading {
+  text-align: center;
+}
+
+.queue__notification {
+}
+
+.queue__info {
+  width: 100%;
+  text-align: center;
+}
+
+@media only screen and (min-width: 600px) {
+  .queue {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
