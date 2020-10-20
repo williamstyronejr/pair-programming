@@ -39,7 +39,7 @@ class NavMenu extends Component {
     ));
 
     const menuType = this.props.menuType || 'left';
-    const active = this.state.toggle ? '-active' : '';
+    const active = this.state.toggle ? '--active' : '';
     const collapsed = this.props.isCollapsed
       ? 'menu-collapsed'
       : 'menu-collapsable';
@@ -63,7 +63,11 @@ class NavMenu extends Component {
     }
 
     return (
-      <div className={`menu ${collapsed} menu-${menuType + active}`}>
+      <div
+        className={`menu ${collapsed} menu-${menuType} ${
+          active ? 'menu-' + menuType + active : ''
+        }`}
+      >
         <div
           className={`nav-toggle nav-toggle-${this.props.toggleType}`}
           onClick={this.toggle}
