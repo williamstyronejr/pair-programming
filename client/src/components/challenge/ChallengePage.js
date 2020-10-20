@@ -67,7 +67,7 @@ class ChallengePage extends Component {
     return (
       <main className="page-main">
         <Challenge
-          private={challenge.private}
+          privateRoom={challenge.private}
           title={challenge.title}
           prompt={challenge.prompt}
           code={challenge.code}
