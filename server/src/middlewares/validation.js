@@ -164,3 +164,13 @@ exports.validatePasswordReset = [
     .withMessage('Passwords do no match.'),
   checkValdation,
 ];
+
+/**
+ * Validation rules for testing code. Checks if both code and language is
+ *  provided.
+ */
+exports.validateCodeTest = [
+  body('code').exists().withMessage('Code must be provided to run test'),
+  body('lang').exists().withMessage('A language must be provided.'),
+  checkValdation,
+];

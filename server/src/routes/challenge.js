@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const bodyParser = require('body-parser');
 const challengeController = require('../controllers/challenge');
+const { validateCodeTest } = require('../middlewares/validation');
 const { requireAuth } = require('../controllers/authentication');
 
 const jsonParser = bodyParser.json();
@@ -28,6 +29,7 @@ router.post(
   '/challenge/:cId/room/:rId/test',
   requireAuth,
   jsonParser,
+  validateCodeTest,
   challengeController.testSolution
 );
 
