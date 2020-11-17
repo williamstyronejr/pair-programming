@@ -15,6 +15,7 @@ router.get('/challenge/list', challengeController.getChallengeList);
 router.post(
   '/challenge/:id/create',
   requireAuth,
+  jsonParser,
   challengeController.createPrivateRoom
 );
 
