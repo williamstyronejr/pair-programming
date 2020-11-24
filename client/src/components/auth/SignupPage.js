@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ajaxRequest } from '../../utils/utils';
 import { setUserData } from '../../actions/authentication';
+import GithubButton from './GithubButton';
 import './styles/signupPage.css';
 
 const SignupPage = (props) => {
@@ -43,7 +44,15 @@ const SignupPage = (props) => {
       <section className="signup">
         <div className="signup__form">
           <header className="signup__header">
-            <h4 className="signup__heading">Create your account</h4>
+            <h1 className="signup__heading">Create your account</h1>
+
+            <GithubButton />
+
+            <div className="signup__separator">
+              <hr />
+              <span>Or</span>
+              <hr />
+            </div>
           </header>
 
           <div className="signup__field">
@@ -105,7 +114,7 @@ const SignupPage = (props) => {
 
           <div className="signup__field">
             <label className="signup__label" htmlFor="confirm">
-              <span className="signup__title">Confirm</span>
+              <span className="signup__title">Confirm Password</span>
               {error && error.confirm && (
                 <span className="signup__fielderror">{error.confirm}</span>
               )}
@@ -122,7 +131,7 @@ const SignupPage = (props) => {
           </div>
 
           <button
-            className="btn btn-submit"
+            className="btn btn--submit btn--small"
             type="button"
             disabled={status === 'sending'}
             onClick={registerUser}
