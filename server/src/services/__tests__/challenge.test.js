@@ -2,7 +2,6 @@ const {
   findChallenge,
   getChallengeList,
   createChallenge,
-  compareSolution,
 } = require('../challenge');
 const { connectDatabase, disconnectDatabase } = require('../database');
 
@@ -20,17 +19,24 @@ describe('Creating challenges', () => {
   test('Successfully creating challenge should response with challenge object', async () => {
     const title = 'title';
     const prompt = 'prompt';
-    const solution = 'solution';
     const tags = 'mklfdsa,mkldfsa';
+    const initialCode = [{ language: 'node', code: 'function main() {\n}' }];
 
-    const challenge = await createChallenge(title, prompt, solution, tags);
+    const challenge = await createChallenge(
+      title,
+      prompt,
+      tags,
+      initialCode,
+      false
+    );
 
     expect(challenge).toBeDefined();
     expect(typeof challenge).toBe('object');
     expect(challenge.title).toBe(title);
     expect(challenge.prompt).toBe(prompt);
-    expect(challenge.solution).toBe(solution);
     expect(challenge.tags).toBe(tags);
+    expect(challenge.initialCode[0].language).toBe(initialCode[0].language);
+    expect(challenge.initialCode[0].code).toBe(initialCode[0].code);
   });
 });
 
@@ -43,7 +49,9 @@ describe('Find challenges', () => {
     const proms = []; // List of promises
     for (let i = 1; i <= numToCreate; i++) {
       proms.push(
-        createChallenge(`title${i}`, `prompt${i}`, `solution${i}`, `tags${i}`)
+        createChallenge(`title${i}`, `prompt${i}`, `tags${i}`, [
+          { language: 'node', code: 'function main() {\n}' },
+        ])
       );
     }
 
@@ -72,28 +80,5 @@ describe('Find challenges', () => {
 
     expect(list).toBeDefined();
     expect(list.length).toBeLessThanOrEqual(limit);
-  });
-});
-
-describe('Comparing Solution', () => {
-  let challenge;
-  const title = 'title';
-  const prompt = 'prompt';
-  const solution = 'test';
-  const tags = 'tag1,tag2';
-
-  beforeAll(async () => {
-    challenge = await createChallenge(title, prompt, solution, tags);
-  }, 10000);
-
-  test('Correct solution', async () => {
-    const c = await compareSolution(challenge.id, solution);
-    expect(c).toBeDefined();
-  });
-
-  test('Incorrect solution', async () => {
-    const c = await compareSolution(challenge.id, `${solution}1`);
-
-    expect(c).toBeNull();
   });
 });
