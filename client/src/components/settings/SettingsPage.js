@@ -50,17 +50,18 @@ const AccountForm = ({ currentUsername, currentEmail, currentImage }) => {
       </header>
 
       <fieldset className="settings__field">
-        <label className="settings__label">
-          <img
-            src={currentImage ? `/img/${currentImage}` : ''}
-            className="settings__image"
-            tabIndex={0}
+        <label className="settings__label" htmlFor="profileImage">
+          <button
+            type="button"
+            className="btn btn--small"
             onClick={() => fileRef.current.click()}
-            onKeyDown={(e) => {
-              const key = e.key || e.keyCode;
-              if (key == 'Enter' || key == 13) fileRef.current.click();
-            }}
-          />
+          >
+            <img
+              src={currentImage ? `/img/${currentImage}` : ''}
+              alt="Profile"
+              className="settings__image"
+            />
+          </button>
 
           <span className="settings__title settings__title--center">
             {currentUsername}
@@ -78,7 +79,7 @@ const AccountForm = ({ currentUsername, currentEmail, currentImage }) => {
       </fieldset>
 
       <fieldset className="settings__field">
-        <label className="settings__label">
+        <label className="settings__label" htmlFor="username">
           <span className="settings__title">Username</span>
           {error.username ? (
             <span className="settings__error">{error.username}</span>
@@ -95,7 +96,7 @@ const AccountForm = ({ currentUsername, currentEmail, currentImage }) => {
       </fieldset>
 
       <fieldset className="settings__field">
-        <label className="settings__label">
+        <label className="settings__label" htmlFor="email">
           <span className="settings__title">Email</span>
           {error.email ? (
             <span className="settings__error">{error.email}</span>
@@ -111,9 +112,11 @@ const AccountForm = ({ currentUsername, currentEmail, currentImage }) => {
         </label>
       </fieldset>
 
-      <button className="btn btn--submit" type="submit" disabled={submitting}>
-        Update
-      </button>
+      <fieldset className="settings__field">
+        <button className="btn btn--submit" type="submit" disabled={submitting}>
+          Update
+        </button>
+      </fieldset>
     </form>
   );
 };
@@ -161,7 +164,7 @@ const PasswordForm = () => {
       </header>
 
       <fieldset className="settings__field">
-        <label className="settings__label">
+        <label className="settings__label" htmlFor="password">
           <span className="settings__title">Current Password</span>
           {error.password ? (
             <span className="settings__error">{error.password}</span>
@@ -177,7 +180,7 @@ const PasswordForm = () => {
       </fieldset>
 
       <fieldset className="settings__field">
-        <label className="settings__label">
+        <label className="settings__label" htmlFor="newPassword">
           <span className="settings__title">New Password</span>
           {error.newPassword ? (
             <span className="settings__error">{error.newPassword}</span>
@@ -193,7 +196,7 @@ const PasswordForm = () => {
       </fieldset>
 
       <fieldset className="settings__field">
-        <label className="settings__label">
+        <label className="settings__label" htmlFor="confirmPassword">
           <span className="settings__title">Confirm Password</span>
           {error.confirmPassword ? (
             <span className="settings__error">{error.confirmPassword}</span>
@@ -208,9 +211,11 @@ const PasswordForm = () => {
         </label>
       </fieldset>
 
-      <button className="btn btn--submit" type="submit" disabled={submitting}>
-        Update
-      </button>
+      <fieldset className="settings__field">
+        <button className="btn btn--submit" type="submit" disabled={submitting}>
+          Update
+        </button>
+      </fieldset>
     </form>
   );
 };
