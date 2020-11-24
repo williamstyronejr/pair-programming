@@ -3,7 +3,7 @@ const {
   addUserToQueue,
   removeUserFromQueue,
   removePendingQueue,
-  markUserAsAccepted
+  markUserAsAccepted,
 } = require('./redis');
 const { createRoom } = require('./room');
 
@@ -41,6 +41,7 @@ function disconnecting() {
  */
 function joinRoom(roomId, username) {
   this.join(roomId);
+  console.log('joining,', { roomId, username });
   this.in(roomId).emit('joinMessage', username);
 }
 
@@ -108,7 +109,7 @@ async function prepareRoom(pendingQueueId, users) {
   const room = await createRoom(pendingQueueId, users);
 
   // Send all users in room a message with room Id
-  users.forEach(user => {
+  users.forEach((user) => {
     io.to(userClients[user]).emit('roomCreated', room.id);
   });
 }
@@ -133,10 +134,10 @@ async function acceptQueue(pendingQueueId) {
  * Initialize event handlers for sockets.
  * @param {Object} server HTTP Server to attach socket to
  */
-exports.setupSocket = server => {
+exports.setupSocket = (server) => {
   io = socket(server);
 
-  io.on('connection', client => {
+  io.on('connection', (client) => {
     client.on('logUser', logSocket);
 
     client.on('disconnecting', disconnecting);
@@ -172,7 +173,7 @@ exports.closeSocket = () => {
  * @param {string} roomId Id of room to send message to
  * @param {string} message Message to send to room
  */
-exports.emitMessageToRoom = (event, roomId, ...args) => {
+exports.emitMessageToRoom = (event, roomId, args) => {
   if (io && roomId) {
     io.to(roomId).emit(event, ...args);
   }
