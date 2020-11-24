@@ -8,6 +8,8 @@ const Header = () => (
     <NavMenu toggleType="img">
       <Link to="/">Home</Link>
       <Link to="/challenges">Challenges</Link>
+      <Link to="/signin">Signin</Link>
+      <Link to="/signup">Signup</Link>
     </NavMenu>
   </header>
 );
