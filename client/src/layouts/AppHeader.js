@@ -47,7 +47,7 @@ const AppHeader = (props) => {
                   <button
                     className="menu__link"
                     type="button"
-                    onClick={() => props.signout}
+                    onClick={() => props.signout()}
                   >
                     Signout
                   </button>
