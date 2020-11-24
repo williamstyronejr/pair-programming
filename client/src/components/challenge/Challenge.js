@@ -9,6 +9,7 @@ import './styles/challenge.css';
 
 const Challenge = (props) => {
   const [inviteVisible, setInviteVisibility] = useState(false);
+  const [details, setDetails] = useState('prompt');
   const {
     title,
     prompt,
@@ -26,54 +27,131 @@ const Challenge = (props) => {
     sendMessage,
     setCode,
     testCode,
+    testResults,
   } = props;
+
+  let detailsComponent;
+
+  switch (details) {
+    case 'output': {
+      let testPass = 0;
+      let testFail = 0;
+
+      const listItems = testResults.map((test) => {
+        if (test.status) {
+          testPass += 1;
+        } else {
+          testFail += 1;
+        }
+
+        return (
+          <li
+            key={test.name}
+            className={`challenge__item ${
+              test.status ? 'challenge__item--pass' : 'challenge__item--fail'
+            }`}
+          >
+            {test.message}
+          </li>
+        );
+      });
+
+      detailsComponent = (
+        <div className="challenge__output">
+          <header className="challenge__results">
+            <h5 className="challenge__status">{`${
+              testResults.length > 0
+                ? `Test Passed: ${testPass} Test Failed: ${testFail}`
+                : testing
+                ? 'Status: Requesting test from server'
+                : 'Your test results will show here'
+            }`}</h5>
+          </header>
+          <ul className="challenge__list">{listItems}</ul>
+        </div>
+      );
+      break;
+    }
+    default:
+      detailsComponent = (
+        <div className="challenge__info">
+          <p className="challenge__prompt">
+            {prompt + prompt + prompt + prompt + prompt + prompt}
+          </p>
+        </div>
+      );
+  }
 
   return (
     <section className="challenge">
       <header className="challenge__header">
         <h3 className="challenge__heading">{title}</h3>
-
-        <div className="challenge__details">
-          <p className="challenge__prompt">{prompt}</p>
-        </div>
       </header>
 
-      {testPassed && (
-        <div className="box box--center">
-          <p className="challenge__complete">
-            Challenge Completed!!!
-            <Link to="/challenges">Click here</Link> to go dashboard.
-          </p>
-        </div>
-      )}
-
       <div className="challenge__content">
-        <CodeMirror
-          className="challenge__editor"
-          value={code}
-          options={{
-            lineNumbers: true,
-            lineWrapping: true,
-            theme: 'material',
-            tabSize: 2,
-            mode: 'javascript',
-          }}
-          onBeforeChange={(editor, data, value) => {
-            setCode(value);
-          }}
-          onChange={(editor, data, value) => {}}
-        />
+        <div className="challenge__details">
+          <nav className="challenge__nav">
+            <button
+              className={`btn btn--nav ${
+                details === 'prompt' ? 'btn--nav-active' : ''
+              }`}
+              type="button"
+              onClick={() => setDetails('prompt')}
+            >
+              Prompt
+            </button>
 
-        {!privateRoom ? (
-          <ChatRoom
-            chatInput={chatInput}
-            messages={messages}
-            setMessage={setMessage}
-            sendMessage={sendMessage}
-            visible={chatVisible}
-            toggleChat={toggleChatVisibility}
+            <button
+              className={`btn btn--nav ${
+                details === 'output' ? 'btn--nav-active' : ''
+              }`}
+              type="button"
+              onClick={() => setDetails('output')}
+            >
+              Output
+            </button>
+          </nav>
+
+          {detailsComponent}
+
+          {testPassed && (
+            <div className="box box--center">
+              <p className="challenge__complete">
+                Challenge Completed!!!
+                <Link to="/challenges">Click here</Link> to go dashboard.
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div className="challenge__tools">
+          <CodeMirror
+            className="challenge__editor"
+            value={code}
+            options={{
+              lineNumbers: true,
+              lineWrapping: true,
+              theme: 'material',
+              tabSize: 2,
+              mode: 'javascript',
+            }}
+            onBeforeChange={(editor, data, value) => {
+              setCode(value);
+            }}
+            onChange={(editor, data, value) => {}}
           />
-        ) : null}
+
+          {!privateRoom ? (
+            <ChatRoom
+              chatInput={chatInput}
+              messages={messages}
+              setMessage={setMessage}
+              sendMessage={sendMessage}
+              visible={chatVisible}
+              toggleChat={toggleChatVisibility}
+            />
+          ) : null}
+        </div>
       </div>
 
       <div className="challenge__options">
@@ -90,7 +168,7 @@ const Challenge = (props) => {
           <div className="">
             {privateRoom ? (
               <button
-                clasName="btn"
+                className="btn"
                 type="button"
                 onClick={convertRoomToPublic}
               >
