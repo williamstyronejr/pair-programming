@@ -12,7 +12,9 @@ const {
   findChallenge,
   compareSolution,
 } = require('../services/challenge');
-const { runCodeContainer } = require('../services/launcher');
+const { publishToQueue } = require('../services/amqp');
+
+const { PRODUCER_QUEUE } = process.env;
 
 /**
  * Creates a invite key for a room. Current just using the room's id.
@@ -30,9 +32,9 @@ function createInviteKey(rId) {
  * @param {function} next Express next function to be called
  */
 exports.createChallenge = (req, res, next) => {
-  const { title, prompt, solution, tags } = req.body;
+  const { title, prompt, tags, initialCode } = req.body;
 
-  createChallenge(title, prompt, solution, tags)
+  createChallenge(title, prompt, tags, initialCode, false)
     .then((challenge) => {
       res.json({ challenge });
     })
@@ -82,8 +84,9 @@ exports.getChallengeList = (req, res, next) => {
 exports.createPrivateRoom = (req, res, next) => {
   const cId = req.params.id;
   const { _id: uId } = req.user;
+  const { language } = req.body;
 
-  createRoom(cId, [uId], true)
+  createRoom(cId, [uId], language, true)
     .then((room) => {
       res.json({ room: room.id });
     })
@@ -198,6 +201,38 @@ exports.joinRoomByInvite = async (req, res, next) => {
 };
 
 /**
+ *
+ * @param {Object} channel
+ * @param {String} msg
+ */
+exports.receiveSolution = async (channel, msg) => {
+  // const content = JSON.parse(msg.content.toString());
+  const { tests, success, error } = JSON.parse(msg.content.toString());
+  const { correlationId } = msg.properties;
+
+  console.log(tests, success, error, correlationId);
+  try {
+    if (error) {
+      // Emit to room the error that occurred.
+      channel.ack(msg);
+      return emitMessageToRoom('test_finish', correlationId, [
+        null,
+        null,
+        error,
+      ]);
+    }
+
+    // If all test passed, mark room as completed server side
+    if (success) markRoomCompleted(correlationId);
+
+    emitMessageToRoom('testCompleted', correlationId, [tests, success, null]);
+    channel.ack(msg);
+  } catch (err) {
+    channel.ack(msg);
+  }
+};
+
+/**
  * Route handler for run tests on user's code. Response with JSON with error or
  *  completed flag.
  * @param {object} req Express request object
@@ -205,35 +240,45 @@ exports.joinRoomByInvite = async (req, res, next) => {
  * @param {function} next Express next function to be called
  */
 exports.testSolution = async (req, res, next) => {
-  const { code } = req.body;
+  const { code, language } = req.body;
   const { cId, rId } = req.params;
 
-  let userSolution;
   try {
-    userSolution = JSON.parse(await runCodeContainer(rId, code, 'node'));
-  } catch (error) {
-    emitMessageToRoom(rId, 'testCompleted', 'Error running code');
-    return res.json({ errors: error.message });
+    const challenge = await findChallenge(cId);
+
+    if (!challenge) {
+      const err = new Error(`Non existing challenge, ${cId}, being tested`);
+      err.msg = 'Challenge being tested does not exist.';
+      err.status = 422;
+      throw err;
+    }
+  } catch (err) {
+    if (err.status) return next(err);
+
+    const error = new Error(`Invalid challenge, ${cId}, being tested`);
+    error.status = 422;
+    error.msg = 'Invalid challenge provided.';
+    return next(error);
   }
 
-  // If solution cames back undefined without an error
-  if (!userSolution || userSolution.error) {
-    emitMessageToRoom(rId, 'testCompleted', 'Unexpected error.');
-    return res.json({ errors: 'Unexpected error.' });
+  try {
+    // Send code to launcher through RabbitMQ
+    const sent = publishToQueue(
+      PRODUCER_QUEUE,
+      JSON.stringify({ code, language, challengeId: cId }),
+      { correlationId: rId }
+    );
+
+    if (!sent) {
+      const err = new Error('Error occurred trying to request test run');
+      err.status = 500;
+      err.msg =
+        'Unexpected error occurred when running test, please try again.';
+      throw err;
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    next(err);
   }
-
-  // Compares user submitted solution to server's
-  const challenge = await compareSolution(cId, userSolution.result);
-
-  if (!challenge) {
-    // Emit error message that solution doesn't work
-    emitMessageToRoom(rId, 'testCompleted', 'Solution does not match ');
-    return res.json({ errors: 'Solution does not match' });
-  }
-
-  await markRoomCompleted(rId);
-
-  // Emit message to room
-  emitMessageToRoom(rId, 'testCompleted');
-  res.json({ solved: true });
 };
