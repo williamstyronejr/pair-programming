@@ -7,12 +7,35 @@
   text-align: center;
 }
 
+.signin__heading {
+  line-height: 2em;
+  font-weight: 300;
+}
+
+.signin__separator {
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 15px 0;
+}
+
+.signin__separator > hr {
+  width: 80%;
+}
+
+.signin__separator > span {
+  margin: 0 10px;
+}
+
 .signin__form {
   display: block;
   width: 80%;
+  max-width: 600px;
   margin: 1.3em auto 0 auto;
   padding: 1.4em 1.2em 1.3em 1.2em;
-  background-color: #262729;
+  border-radius: 5px;
+  background-color: white;
+  border: 1px solid #c8cdd2;
+  box-shadow: 2px 2px 3px 0 rgba(117, 124, 129, 0.12);
 }
 
 .signin__warning {
@@ -25,26 +48,26 @@
 }
 
 .signin__field {
-  margin: 0 0 1.3em 0;
+  margin: 0 10px 1.3em 10px;
 }
 
 .signin__input {
   display: block;
   width: 90%;
   height: 50px;
-  border: none;
-  border-radius: 4px;
-  padding: 0 0 0 1.1em;
   margin: 10px auto;
-  background-color: #222325;
-  color: white;
+  padding: 0 0 0 1.1em;
+  border: 1px solid #96a0aa;
+  border-radius: 4px;
+  background-color: white;
+  color: black;
 }
 
-.signin__input:hover,
 .signin__input:focus {
-  background-color: #131414;
+  -webkit-box-shadow: 0 0 0 4px #02b3e4;
+  box-shadow: 0 0 0 4px #02b3e4;
+  outline: none;
 }
 
-.signin__field span {
-  color: white;
+@media only screen and (min-width: 600px) {
 }

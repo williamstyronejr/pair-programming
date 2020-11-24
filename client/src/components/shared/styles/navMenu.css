@@ -93,7 +93,7 @@
 }
 
 .nav-list li a:hover {
-  color: blue;
+  color: #f1f1f1;
 }
 
 @media only screen and (min-width: 600px) {

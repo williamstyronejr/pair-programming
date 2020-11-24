@@ -1,10 +1,16 @@
 .settings {
   display: flex;
+  justify-content: center;
   width: 100%;
+  padding: 1em 0 0 0;
 }
 
 .settings__aside {
   display: none;
+  background-color: #ffffff;
+  border: 1px solid #c8cdd2;
+  box-shadow: 2px 2px 3px 0 rgba(117, 124, 129, 0.12);
+  border-right: none; /* Prevent double border */
 }
 
 .settings--inactive .settings__aside {
@@ -43,6 +49,7 @@
 }
 
 .settings__content {
+  max-width: 600px;
   flex: 1 0 auto;
 }
 
@@ -51,11 +58,11 @@
 }
 
 .settings__form {
-  width: 80%;
-  max-width: 600px;
-  margin: 1.3em auto 0 auto;
-  padding: 10px 0;
+  width: 100%;
+  padding: 0 10px;
   background-color: #ffffff;
+  border: 1px solid #c8cdd2;
+  box-shadow: 2px 2px 3px 0 rgba(117, 124, 129, 0.12);
 }
 
 .settings__notification {

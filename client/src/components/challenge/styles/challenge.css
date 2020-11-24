@@ -16,14 +16,40 @@
   margin: 0;
 }
 
-.challenge__details {
+.challenge__nav {
+  width: 100%;
+}
+
+.challenge__list {
+  margin: 0;
+  padding: 0;
+}
+
+.challenge__output {
+}
+
+.challenge__item {
 }
 
 .challenge__prompt {
-  margin: 0;
+  padding: 0 1em;
 }
 
 .challenge__content {
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 0 1 auto;
+  width: 100%;
+}
+
+.challenge__details {
+  width: 100%;
+  background-color: #262729;
+  color: white;
+  margin: 5px 0;
+}
+
+.challenge__tools {
   display: flex;
   flex-flow: row nowrap;
   flex: 1 0 auto;
@@ -53,4 +79,18 @@
 }
 
 @media only screen and (min-width: 600px) {
+  .challenge {
+    flex-flow: row wrap;
+  }
+
+  .challenge__header {
+    width: 100%;
+    flex: 1 0 auto;
+  }
+
+  .challenge__details {
+    width: 200px;
+    flex: 0 1 auto;
+    margin: 5px;
+  }
 }

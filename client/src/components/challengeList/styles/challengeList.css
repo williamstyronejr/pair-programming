@@ -8,11 +8,12 @@
 
 .challenge-list__item {
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: row wrap;
   margin: 10px 15px;
   padding: 10px;
-  background-color: grey;
+  background-color: #ffffff;
   box-shadow: 0 4px 6px -1px black;
+  border-radius: 5px;
 }
 
 .challenge-list__title {
@@ -29,8 +30,8 @@
 }
 
 .challenge-list__tag {
-  background-color: blue;
-  color: white;
+  background-color: #f2f2f2;
+  color: black;
   margin: 5px 10px 0 0;
   padding: 7px;
   border-radius: 5px;
@@ -39,23 +40,35 @@
 .challenge-list__options {
   display: block;
   width: 100%;
+  color: black;
 }
 
 .challenge-list__link {
-  color: white;
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  color: black;
   border: none;
   text-decoration: none;
-  background-color: transparent;
+  text-align: center;
+  margin: 10px 0;
 }
 
 .challenge-list__link:hover {
   cursor: pointer;
+  background-color: #b6b5b5;
 }
 
 @media only screen and (min-width: 600px) {
   .challenge-list {
     flex: 1 0 auto;
     width: auto;
+  }
+
+  .challenge-list__item {
+    flex-flow: row nowrap;
   }
 
   .challenge-list__details {
