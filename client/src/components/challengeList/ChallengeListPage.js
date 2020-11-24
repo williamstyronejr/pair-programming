@@ -45,9 +45,8 @@ const ChallengeListPage = (props) => {
     if (creatingRoom) return; // Stop user from creating multiple rooms at once
     setCreatingRoom(true);
 
-    ajaxRequest(`/challenge/${cId}/create`, 'POST')
+    ajaxRequest(`/challenge/${cId}/create`, 'POST', { language: 'node' })
       .then((res) => {
-        console.log(res.data);
         if (!res.data.room) {
           setRoomError(true);
         }
