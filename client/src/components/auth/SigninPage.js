@@ -37,7 +37,15 @@ const SigninPage = (props) => {
       <section className="signin">
         <div className="signin__form">
           <header className="signin__header">
-            <h4 className="signin__heading">Sign in to your account</h4>
+            <h1 className="signin__heading">Sign in to your account</h1>
+
+            <GithubButton signIn />
+
+            <div className="signin__separator">
+              <hr />
+              <span>Or</span>
+              <hr />
+            </div>
           </header>
 
           {error && (
@@ -48,7 +56,7 @@ const SigninPage = (props) => {
 
           <div className="signin__field">
             <label className="signin__label" htmlFor="user">
-              Username
+              <span className="signin__title">Username</span>
               <input
                 className="signin__input"
                 type="text"
@@ -77,7 +85,7 @@ const SigninPage = (props) => {
           </div>
 
           <button
-            className="btn btn-submit"
+            className="btn btn--submit btn--small"
             type="button"
             disabled={status === 'sending'}
             onClick={signUserIn}
@@ -86,8 +94,6 @@ const SigninPage = (props) => {
           </button>
         </div>
       </section>
-
-      <GithubButton />
     </main>
   );
 };
