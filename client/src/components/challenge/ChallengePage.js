@@ -37,12 +37,10 @@ class ChallengePage extends Component {
 
   // Handle initialing socket
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (!this.props.challenge.private) {
-      if (!this.props.chat.connected) {
-        this.props.openSocket();
-      } else if (!this.props.chat.roomJoined) {
-        this.props.joinRoom(this.props.match.params.rId, this.props.username);
-      }
+    if (!this.props.chat.connected) {
+      this.props.openSocket();
+    } else if (!this.props.chat.roomJoined) {
+      this.props.joinRoom(this.props.match.params.rId, this.props.username);
     }
   }
 
@@ -72,7 +70,9 @@ class ChallengePage extends Component {
           prompt={challenge.prompt}
           code={challenge.code}
           testing={challenge.testing}
+          langauge={challenge.language}
           testPassed={challenge.testPassed}
+          testResults={challenge.testResults}
           testErrors={challenge.testErrors}
           inviteLink={challenge.inviteLink}
           messages={chat.messages}
@@ -93,7 +93,8 @@ class ChallengePage extends Component {
             this.props.testCode(
               this.props.match.params.cId,
               this.props.match.params.rId,
-              code
+              code,
+              this.props.challenge.language
             )
           }
         />
@@ -118,7 +119,8 @@ const mapDispatchToProps = (dispatch) => ({
   toggleChatVisibility: () => dispatch(toggleChatVisibility()),
   setCode: (room, code) => dispatch(setCode(room, code)),
   convertRoomToPublic: (rId) => dispatch(convertRoomToPublic(rId)),
-  testCode: (cId, rId, code) => dispatch(testCode(cId, rId, code)),
+  testCode: (cId, rId, code, language) =>
+    dispatch(testCode(cId, rId, code, language)),
   clearData: () => dispatch(clearData()),
 });
 
