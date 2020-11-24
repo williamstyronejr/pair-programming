@@ -5,8 +5,7 @@ import {
   SET_CODE,
   ADD_INVITE_LINK,
   TEST_CODE,
-  TEST_PASSED,
-  TEST_FAILED,
+  TEST_FINISH,
 } from '../actions/challenge';
 
 const initState = {
@@ -14,12 +13,16 @@ const initState = {
   title: '',
   prompt: '',
   code: '',
+  language: '',
+
   challengeError: null,
-  private: null,
+  private: true, // Flag for indicating if a room is private or public
   inviteLink: null,
-  testing: false,
-  testPassed: false,
-  testErrors: null,
+
+  testing: false, // Flag for testing
+  testPassed: false, // Flag for all test passing
+  testErrors: null, // Contains any non-code errors (server side errors)
+  testResults: [], // Array to contains data on each test ran
 };
 
 const ChallengeReducer = (state = initState, action) => {
@@ -27,9 +30,14 @@ const ChallengeReducer = (state = initState, action) => {
     case SET_CHALLENGE_DATA:
       return {
         ...state,
+        id: action.payload.challenge._id,
         title: action.payload.challenge.title,
         prompt: action.payload.challenge.prompt,
         private: action.payload.room.private,
+        language: action.payload.room.language,
+        code: action.payload.challenge.initialCode.find(
+          (val) => val.language === action.payload.room.language
+        ).code,
         inviteLink: action.payload.room.inviteKey
           ? `localhost:3000/invite/${action.payload.room.inviteKey}`
           : null,
@@ -66,20 +74,16 @@ const ChallengeReducer = (state = initState, action) => {
       return {
         ...state,
         testing: true,
-      };
-
-    case TEST_PASSED:
-      return {
-        ...state,
-        testPassed: true,
-        testing: false,
-      };
-
-    case TEST_FAILED:
-      return {
-        ...state,
+        testResults: [],
         testPassed: false,
-        testErrors: action.payload,
+      };
+
+    case TEST_FINISH:
+      return {
+        ...state,
+        testPassed: action.payload.success,
+        testResults: action.payload.results,
+        testErrors: action.payload.errors,
         testing: false,
       };
 
