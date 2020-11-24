@@ -4,16 +4,24 @@ const Challenge = require('../models/challenge');
  * Creates and return a challenge.
  * @param {String} title The title of the challenge
  * @param {String} prompt The prompt, or description, of the challenge
- * @param {String} solution The solution to test against.
  * @param {String} tags Tags separated by commas, will be set to lower case
- * @return {Promise<object>} A promise to resolve with a challenge object.
+ * @param {Array<Object>} initialCode List of supported languages and initial
+ *  code templates for those languages
+ * @return {Promise<Object>} A promise to resolve with a challenge object.
  */
-exports.createChallenge = (title, prompt, solution, tags) => {
+exports.createChallenge = (
+  title,
+  prompt,
+  tags,
+  initialCode,
+  isPublic = false
+) => {
   return Challenge({
     title,
     prompt,
-    solution,
     tags: tags.toLowerCase(),
+    initialCode,
+    isPublic,
   }).save();
 };
 
@@ -43,20 +51,4 @@ exports.getChallengeList = (skip = 0, limit = 10, projection = null) => {
  */
 exports.findChallenge = (id, projection = null) => {
   return Challenge.findById(id, projection).exec();
-};
-
-/**
- * Updates a challenge that matchs the id and solution provided by incrementing it's
- *  completed count. Will only update if correct solution is provided.
- * @param {String} id The id of the challenge to test solution against
- * @param {String} testSolution Solution to test against
- * @param {Number} inc Amount to increment completed count by.
- * @return {Promise<object>} A promise to resolve with the challenge object if
- *  the solution was correct, null otherwise.
- */
-exports.compareSolution = (id, testSolution, inc = 1) => {
-  return Challenge.findOneAndUpdate(
-    { _id: id, solution: testSolution },
-    { $inc: { 'meta.completed': inc } }
-  ).exec();
 };
