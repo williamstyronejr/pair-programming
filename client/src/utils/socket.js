@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import { SET_CODE, TEST_PASSED, TEST_FAILED } from '../actions/challenge';
+import { SET_CODE, TEST_FINISH } from '../actions/challenge';
 import { SEND_MESSAGE } from '../actions/chat';
 import {
   OPEN_SOCKET,
@@ -138,16 +138,15 @@ export default (store) => {
     });
   });
 
-  // Handle receiving test updates
-  socket.on('testCompleted', (errors) => {
-    // Check if there are any errors
-    if (errors) {
-      store.dispatch({
-        type: TEST_FAILED,
-        payload: errors,
-      });
-    } else {
-      store.dispatch({ type: TEST_PASSED });
-    }
+  // Handle receiving updates on code test run
+  socket.on('testCompleted', (tests, success, errors) => {
+    store.dispatch({
+      type: TEST_FINISH,
+      payload: {
+        results: tests,
+        success,
+        errors,
+      },
+    });
   });
 };
