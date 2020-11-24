@@ -6,9 +6,10 @@ const {
   connectDatabase,
   disconnectDatabase,
 } = require('../../services/database');
+const { connectAMQP, closeAMQP } = require('../../services/amqp');
 const { createRandomString } = require('../../utils/utils');
 
-const { DB_TEST_URI } = process.env;
+const { DB_TEST_URI, RABBITMQ_URL } = process.env;
 
 app.use(userRoutes);
 app.use(challengeRoutes);
@@ -30,6 +31,7 @@ let userCookie2; // Authroization token for user
 let userCookie3; // Authroization token for user
 
 beforeAll(async () => {
+  await connectAMQP(RABBITMQ_URL);
   await connectDatabase(DB_TEST_URI);
 
   await Promise.all([
@@ -66,10 +68,16 @@ beforeAll(async () => {
         userCookie3 = res.headers['set-cookie'][0];
       }),
   ]);
-}, 10000);
+}, 12000);
 
-afterAll(async () => {
+afterAll(async (done) => {
   await disconnectDatabase();
+
+  // Allow time for AMQP to send message
+  setTimeout(async () => {
+    await closeAMQP();
+    done();
+  }, 2000);
 });
 
 /**
@@ -290,5 +298,57 @@ describe('/POST /invite/:invite', () => {
         expect(err).toBeDefined();
         expect(err.response).toBeDefined(); // Error came from request
       });
+  });
+});
+
+describe('/POST /challenge/:cId/room/:rId/test', () => {
+  const routeToTest = (cId, rId) => `/challenge/${cId}/room/${rId}/test`;
+  let roomId;
+
+  // Create a new room
+  beforeAll(async () => {
+    roomId = await createRoomRoute(challenge._id, userCookie);
+  });
+
+  test('Non-existing params will throw 400 error with error messages', async () => {
+    await request(app)
+      .post(routeToTest('dnjs', roomId))
+      .set('Cookie', userCookie)
+      .expect(400)
+      .catch((err) => {
+        expect(err).toBeDefined();
+        expect(err.response.data.code).toBeDefined();
+        expect(err.response.data.lang).toBeDefined();
+      });
+  });
+
+  test('Invalid challengeId should throw 400 error with message', async () => {
+    const code = 'function main(num, power) { return Math.pow(num, power); }';
+    const lang = 'node';
+    const invalidChallengeId = 'index';
+
+    await request(app)
+      .post(routeToTest(invalidChallengeId, roomId))
+      .set('Cookie', userCookie)
+      .send({ code, lang })
+      .expect(422)
+      .catch((err) => {
+        expect(err).toBeDefined();
+        expect(err.response.data).toBeDefined();
+      });
+  });
+
+  test('Successfully request should response 200 with success message', async () => {
+    const code = 'function main(num, power) { return Math.pow(num, power); }';
+    const lang = 'node';
+
+    const res = await request(app)
+      .post(routeToTest(challenge._id, roomId))
+      .set('Cookie', userCookie)
+      .send({ code, lang })
+      .expect(200);
+
+    expect(res).toBeDefined();
+    expect(res.body.success).toBeTruthy();
   });
 });
