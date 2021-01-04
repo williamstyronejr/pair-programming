@@ -45,6 +45,8 @@ function parseOutput(output, errOutput, lang) {
 
   switch (lang) {
     case 'node': {
+      console.log(formattedOutput);
+      break;
       // Separate jest's JSON output from console output
       const first = output.indexOf('{');
       const last = output.lastIndexOf('}');
@@ -108,14 +110,16 @@ async function launchContainer(queueId, code, language, challengeId) {
   switch (language.toLowerCase()) {
     case 'node':
       fileName = `${queueId}.js`;
-      commands = [
-        'npm',
-        'test',
-        '--',
-        challengeId,
-        '--passWithNoTests',
-        '--json',
-      ];
+      // commands = [
+      //   'npm',
+      //   'test',
+      //   '--',
+      //   challengeId,
+      //   '--passWithNoTests',
+      //   '--json',
+      //   '--listTests',
+      // ];
+      commands = ['node', './src/testingLibrary.js'];
       break;
 
     default: {
@@ -144,7 +148,7 @@ async function launchContainer(queueId, code, language, challengeId) {
             fileName
           )}:/app/src/${fileName}`,
         ],
-        Env: [`FILENAME=${fileName}`],
+        Env: [`FILENAME=${fileName}`, `CHALLENGEID=${challengeId}`],
       };
 
       let dockerOutput = '';
@@ -168,9 +172,13 @@ async function launchContainer(queueId, code, language, challengeId) {
         dockerOutput = Buffer.concat(chunks).toString('utf8');
         errOutput = Buffer.concat(errChunks).toString('utf8');
 
+        console.log(dockerOutput);
+        console.log(errOutput);
+
         try {
           deleteCodeFile(fileName);
-          return res(parseOutput(dockerOutput, errOutput, language));
+          return res({ tests: dockerOutput });
+          // return res(parseOutput(dockerOutput, errOutput, language));
         } catch (err) {
           return rej(err);
         }

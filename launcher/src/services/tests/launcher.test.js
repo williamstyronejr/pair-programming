@@ -7,38 +7,38 @@ describe('Running node code in docker', () => {
     }
   `;
 
-  test('Invalid or unsupported langauge throws 422 error with message', async () => {
-    const type = 'non';
-    const queueId = 'fmkdslfdsc';
-    const challengeId = '1234dksal';
+  // test('Invalid or unsupported langauge throws 422 error with message', async () => {
+  //   const type = 'non';
+  //   const queueId = 'fmkdslfdsc';
+  //   const challengeId = '1234dksal';
 
-    try {
-      await launchContainer(queueId, testCode, type, challengeId);
-    } catch (err) {
-      expect(err).toBeDefined();
-      expect(err.status).toBe(422);
-      expect(err.msg).toBeDefined();
-    }
-  });
+  //   try {
+  //     await launchContainer(queueId, testCode, type, challengeId);
+  //   } catch (err) {
+  //     expect(err).toBeDefined();
+  //     expect(err.status).toBe(422);
+  //     expect(err.msg).toBeDefined();
+  //   }
+  // });
 
-  test('Invalid challenge id should throw 422 error with message', async () => {
-    const langauge = 'node';
-    const challengeId = 'fdkslafm';
-    const queueId = 'fdskflsdnmf';
+  // test('Invalid challenge id should throw 422 error with message', async () => {
+  //   const langauge = 'node';
+  //   const challengeId = 'fdkslafm';
+  //   const queueId = 'fdskflsdnmf';
 
-    try {
-      await launchContainer(queueId, testCode, langauge, challengeId);
-    } catch (err) {
-      expect(err).toBeDefined();
-      expect(err.status).toBe(422);
-      expect(err.msg).toBeDefined();
-    }
-  });
+  //   try {
+  //     await launchContainer(queueId, testCode, langauge, challengeId);
+  //   } catch (err) {
+  //     expect(err).toBeDefined();
+  //     expect(err.status).toBe(422);
+  //     expect(err.msg).toBeDefined();
+  //   }
+  // });
 
   test('Valid parameters should response with object containing results', async () => {
     const langauge = 'node';
     const queueId = 'dfmklafd';
-    const challengeId = 'index'; // Should be a test file in tests folder
+    const challengeId = 'index'; // Should be a test file in challengeTests folder
 
     const results = await launchContainer(
       queueId,
@@ -46,6 +46,8 @@ describe('Running node code in docker', () => {
       langauge,
       challengeId
     );
+
+    console.log(results);
 
     expect(results).toBeDefined();
     expect(typeof results).toBe('object');
